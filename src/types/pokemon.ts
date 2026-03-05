@@ -6,6 +6,7 @@ export interface Player {
   id: string;
   initials: string;
   color: string;
+  avatar?: string; // URL or data URI
 }
 
 export interface Pokemon {

@@ -14,8 +14,9 @@ interface GameState {
   getActiveRun: () => Run | undefined;
 
   // Player actions
-  addPlayer: (runId: string, initials: string) => void;
+  addPlayer: (runId: string, initials: string, avatar?: string) => void;
   removePlayer: (runId: string, playerId: string) => void;
+  updatePlayer: (runId: string, playerId: string, updates: Partial<Player>) => void;
 
   // Lives
   setLives: (runId: string, lives: number) => void;
@@ -71,7 +72,7 @@ export const useGameStore = create<GameState>()(
         return state.runs.find(r => r.id === state.activeRunId);
       },
 
-      addPlayer: (runId, initials) => {
+      addPlayer: (runId, initials, avatar) => {
         set(state => ({
           runs: state.runs.map(run => {
             if (run.id !== runId) return run;
@@ -80,8 +81,23 @@ export const useGameStore = create<GameState>()(
               id: crypto.randomUUID(),
               initials: initials.toUpperCase().slice(0, 3),
               color: PLAYER_COLORS[colorIndex],
+              avatar,
             };
             return { ...run, players: [...run.players, player] };
+          }),
+        }));
+      },
+
+      updatePlayer: (runId, playerId, updates) => {
+        set(state => ({
+          runs: state.runs.map(run => {
+            if (run.id !== runId) return run;
+            return {
+              ...run,
+              players: run.players.map(p =>
+                p.id === playerId ? { ...p, ...updates } : p
+              ),
+            };
           }),
         }));
       },
