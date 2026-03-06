@@ -1,6 +1,6 @@
 import { Pokemon, Player } from '@/types/pokemon';
 import { PlayerBadge } from './PlayerBadge';
-import { getPokemonArtwork } from '@/data/kanto';
+import { getPokemonArtwork } from '@/data/pokemon';
 import { Skull } from 'lucide-react';
 
 interface PokemonCardProps {

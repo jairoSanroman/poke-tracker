@@ -5,7 +5,7 @@ import { GameLayout } from '@/components/GameLayout';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { PLAYER_COLORS } from '@/data/kanto';
+import { PLAYER_COLORS } from '@/data/pokemon';
 import { Plus, Trash2, Camera, RefreshCw } from 'lucide-react';
 import { Player } from '@/types/pokemon';
 

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Search, Skull } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pokemon, PokemonStatus } from '@/types/pokemon';
-import { getPokemonArtwork, getPokemonSprite } from '@/data/kanto';
+import { getPokemonArtwork, getPokemonSprite, GENERATIONS, getGeneration } from '@/data/pokemon';
 import { useRunCaptures, useUpdateCaptureStatus, useInsertCapture, CaptureRow } from '@/hooks/useCaptures';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
