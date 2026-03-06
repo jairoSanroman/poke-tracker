@@ -1,4 +1,4 @@
-export type PokemonStatus = 'seen' | 'captured' | 'ko' | 'in_team' | 'boxed';
+export type PokemonStatus = 'seen' | 'captured' | 'ko' | 'in_team' | 'boxed' | 'dead';
 export type RouteStatus = 'pending' | 'completed' | 'no_encounter' | 'blocked';
 export type CaptureResult = 'captured' | 'failed' | 'repeated' | 'ko';
 
