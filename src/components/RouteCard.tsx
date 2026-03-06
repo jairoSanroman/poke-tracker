@@ -1,6 +1,6 @@
 import { GameRoute, Player, Pokemon } from '@/types/pokemon';
 import { PlayerBadge } from './PlayerBadge';
-import { MapPin, Plus, Link2 } from 'lucide-react';
+import { MapPin, Plus, Link2, Skull } from 'lucide-react';
 
 interface RouteCardProps {
   route: GameRoute;
@@ -64,19 +64,21 @@ export function RouteCard({ route, players, pokemon, onAddCapture }: RouteCardPr
 
               if (!player) return null;
 
+              const isDead = poke?.status === 'dead';
+
               return (
-                <div key={capture.playerId} className="flex items-center gap-2 bg-card/80 rounded-lg px-3 py-2">
+                <div key={capture.playerId} className={`flex items-center gap-2 rounded-lg px-3 py-2 ${isDead ? 'bg-muted/60 opacity-60' : 'bg-card/80'}`}>
                   <PlayerBadge player={player} size="sm" />
                   {poke ? (
                     <>
                       <img
                         src={poke.imageUrl}
                         alt={poke.species}
-                        className="w-8 h-8 pixelated"
+                        className={`w-8 h-8 pixelated ${isDead ? 'grayscale' : ''}`}
                         onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium truncate">
+                        <p className={`text-xs font-medium truncate ${isDead ? 'text-muted-foreground line-through' : ''}`}>
                           {poke.species}
                           {poke.nickname && <span className="text-muted-foreground ml-1">"{poke.nickname}"</span>}
                         </p>
@@ -87,7 +89,13 @@ export function RouteCard({ route, players, pokemon, onAddCapture }: RouteCardPr
                       <p className="text-xs text-muted-foreground">Sin captura</p>
                     </div>
                   )}
-                  <span className={`status-badge text-[10px] ${rInfo.className}`}>{rInfo.label}</span>
+                  {isDead ? (
+                    <span className="status-badge text-[10px] bg-destructive/15 text-destructive flex items-center gap-0.5">
+                      <Skull className="w-3 h-3" /> Muerto
+                    </span>
+                  ) : (
+                    <span className={`status-badge text-[10px] ${rInfo.className}`}>{rInfo.label}</span>
+                  )}
                 </div>
               );
             })}
