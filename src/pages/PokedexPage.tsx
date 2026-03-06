@@ -20,6 +20,7 @@ export default function PokedexPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [playerFilter, setPlayerFilter] = useState<string>('all');
+  const [genFilter, setGenFilter] = useState<number | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
   const [editNickname, setEditNickname] = useState('');
 
@@ -60,6 +61,7 @@ export default function PokedexPage() {
     if (search && !p.species.toLowerCase().includes(search.toLowerCase()) && !(p.nickname && p.nickname.toLowerCase().includes(search.toLowerCase()))) return false;
     if (statusFilter !== 'all' && p.status !== statusFilter) return false;
     if (playerFilter !== 'all' && p.playerId !== playerFilter) return false;
+    if (genFilter !== null && getGeneration(p.speciesId) !== genFilter) return false;
     return true;
   });
 
