@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Search, Skull } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pokemon, PokemonStatus } from '@/types/pokemon';
-import { getPokemonArtwork, getPokemonSprite } from '@/data/kanto';
+import { getPokemonArtwork, getPokemonSprite, GENERATIONS, getGeneration } from '@/data/pokemon';
 import { useRunCaptures, useUpdateCaptureStatus, useInsertCapture, CaptureRow } from '@/hooks/useCaptures';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -20,6 +20,7 @@ export default function PokedexPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [playerFilter, setPlayerFilter] = useState<string>('all');
+  const [genFilter, setGenFilter] = useState<number | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
   const [editNickname, setEditNickname] = useState('');
 
@@ -60,6 +61,7 @@ export default function PokedexPage() {
     if (search && !p.species.toLowerCase().includes(search.toLowerCase()) && !(p.nickname && p.nickname.toLowerCase().includes(search.toLowerCase()))) return false;
     if (statusFilter !== 'all' && p.status !== statusFilter) return false;
     if (playerFilter !== 'all' && p.playerId !== playerFilter) return false;
+    if (genFilter !== null && getGeneration(p.speciesId) !== genFilter) return false;
     return true;
   });
 
@@ -152,6 +154,24 @@ export default function PokedexPage() {
               }`}
             >
               {s.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+          <button
+            onClick={() => setGenFilter(null)}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === null ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'}`}
+          >
+            Todas
+          </button>
+          {GENERATIONS.map(g => (
+            <button
+              key={g.id}
+              onClick={() => setGenFilter(g.id)}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === g.id ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'}`}
+            >
+              {g.name}
             </button>
           ))}
         </div>

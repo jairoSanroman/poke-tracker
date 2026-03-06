@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Run, Player, Pokemon, GameRoute, CaptureResult, PokemonStatus } from '@/types/pokemon';
-import { KANTO_ROUTES, PLAYER_COLORS } from '@/data/kanto';
+import { KANTO_ROUTES, PLAYER_COLORS } from '@/data/pokemon';
 
 interface GameState {
   runs: Run[];
