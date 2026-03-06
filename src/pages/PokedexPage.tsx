@@ -5,10 +5,13 @@ import { GameLayout } from '@/components/GameLayout';
 import { PokemonCard } from '@/components/PokemonCard';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Skull } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Pokemon, PokemonStatus } from '@/types/pokemon';
-import { getPokemonArtwork } from '@/data/kanto';
+import { getPokemonArtwork, getPokemonSprite } from '@/data/kanto';
+import { useRunCaptures, useUpdateCaptureStatus, useInsertCapture, CaptureRow } from '@/hooks/useCaptures';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export default function PokedexPage() {
   const { getActiveRun, activeRunId, updatePokemon } = useGameStore();
@@ -20,21 +23,40 @@ export default function PokedexPage() {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
   const [editNickname, setEditNickname] = useState('');
 
+  // Death flow state
+  const [deathModalOpen, setDeathModalOpen] = useState(false);
+  const [linkedCaptures, setLinkedCaptures] = useState<CaptureRow[]>([]);
+  const [loadingDeath, setLoadingDeath] = useState(false);
+
+  const { data: dbCaptures = [] } = useRunCaptures(activeRunId);
+  const updateStatus = useUpdateCaptureStatus();
+  const insertCapture = useInsertCapture();
+
   useEffect(() => {
     if (!activeRunId) navigate('/');
   }, [activeRunId, navigate]);
 
   if (!run) return null;
 
+  // Merge local pokemon with DB status (DB is source of truth for status)
+  const mergedPokemon = run.pokemon.map(p => {
+    const dbCapture = dbCaptures.find(c => c.id === p.id);
+    if (dbCapture) {
+      return { ...p, status: dbCapture.status as PokemonStatus };
+    }
+    return p;
+  });
+
   const statuses = [
     { value: 'all', label: 'Todos' },
     { value: 'captured', label: 'Capturados' },
     { value: 'in_team', label: 'En equipo' },
+    { value: 'dead', label: 'Muertos' },
     { value: 'ko', label: 'KO' },
     { value: 'seen', label: 'Vistos' },
   ];
 
-  const filtered = run.pokemon.filter(p => {
+  const filtered = mergedPokemon.filter(p => {
     if (search && !p.species.toLowerCase().includes(search.toLowerCase()) && !(p.nickname && p.nickname.toLowerCase().includes(search.toLowerCase()))) return false;
     if (statusFilter !== 'all' && p.status !== statusFilter) return false;
     if (playerFilter !== 'all' && p.playerId !== playerFilter) return false;
@@ -44,6 +66,11 @@ export default function PokedexPage() {
   const handleStatusChange = (pokemonId: string, status: PokemonStatus) => {
     if (!activeRunId) return;
     updatePokemon(activeRunId, pokemonId, { status });
+    // Also update in DB
+    const dbCapture = dbCaptures.find(c => c.id === pokemonId);
+    if (dbCapture) {
+      updateStatus.mutate({ id: pokemonId, status });
+    }
     setSelectedPokemon(prev => prev && prev.id === pokemonId ? { ...prev, status } : prev);
   };
 
@@ -51,6 +78,60 @@ export default function PokedexPage() {
     if (!activeRunId || !selectedPokemon) return;
     updatePokemon(activeRunId, selectedPokemon.id, { nickname: editNickname || undefined });
     setSelectedPokemon(prev => prev ? { ...prev, nickname: editNickname || undefined } : prev);
+  };
+
+  const handleMarkDead = async (pokemon: Pokemon) => {
+    if (!activeRunId) return;
+    setLoadingDeath(true);
+
+    try {
+      // Ensure this capture exists in DB
+      let dbCapture = dbCaptures.find(c => c.id === pokemon.id);
+      if (!dbCapture) {
+        // Insert into DB first
+        await insertCapture.mutateAsync({
+          id: pokemon.id,
+          run_id: activeRunId,
+          player_id: pokemon.playerId,
+          route_id: pokemon.routeId,
+          species: pokemon.species,
+          species_id: pokemon.speciesId,
+          nickname: pokemon.nickname || '',
+          image_url: pokemon.imageUrl,
+          origin_type: 'route',
+          origin_id: pokemon.routeId,
+          status: 'dead',
+        });
+      } else {
+        // Update status to dead
+        await updateStatus.mutateAsync({ id: pokemon.id, status: 'dead' });
+      }
+
+      // Update local store
+      updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
+
+      // Fetch linked captures (same origin_type + origin_id, different player)
+      const originType = dbCapture?.origin_type || 'route';
+      const originId = dbCapture?.origin_id || pokemon.routeId;
+
+      const { data: linked, error } = await supabase
+        .from('captures')
+        .select('*')
+        .eq('origin_type', originType)
+        .eq('origin_id', originId)
+        .neq('player_id', pokemon.playerId);
+
+      if (error) throw error;
+
+      setLinkedCaptures(linked || []);
+      setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
+      setDeathModalOpen(true);
+    } catch (err) {
+      console.error(err);
+      toast.error('Error al marcar como muerto');
+    } finally {
+      setLoadingDeath(false);
+    }
   };
 
   return (
@@ -121,11 +202,13 @@ export default function PokedexPage() {
         )}
       </div>
 
-      <Dialog open={!!selectedPokemon} onOpenChange={v => { if (!v) setSelectedPokemon(null); }}>
+      {/* Detail Dialog */}
+      <Dialog open={!!selectedPokemon && !deathModalOpen} onOpenChange={v => { if (!v) setSelectedPokemon(null); }}>
         <DialogContent className="rounded-3xl glass-card-elevated max-w-sm max-h-[85vh] overflow-y-auto">
           {selectedPokemon && (() => {
             const player = run.players.find(p => p.id === selectedPokemon.playerId);
             const route = run.routes.find(r => r.id === selectedPokemon.routeId);
+            const isDead = selectedPokemon.status === 'dead';
             return (
               <>
                 <DialogHeader>
@@ -134,13 +217,18 @@ export default function PokedexPage() {
                     <span className="text-sm text-muted-foreground font-normal">
                       #{String(selectedPokemon.speciesId).padStart(3, '0')}
                     </span>
+                    {isDead && (
+                      <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-destructive">
+                        <Skull className="w-3.5 h-3.5" /> Muerto
+                      </span>
+                    )}
                   </DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col items-center gap-4 py-2">
                   <img
                     src={getPokemonArtwork(selectedPokemon.speciesId)}
                     alt={selectedPokemon.species}
-                    className="w-32 h-32 object-contain drop-shadow-lg"
+                    className={`w-32 h-32 object-contain drop-shadow-lg ${isDead ? 'grayscale opacity-50' : ''}`}
                     onError={(e) => { (e.target as HTMLImageElement).src = selectedPokemon.imageUrl; }}
                   />
 
@@ -180,11 +268,12 @@ export default function PokedexPage() {
                             <button
                               key={s}
                               onClick={() => handleStatusChange(selectedPokemon.id, s)}
+                              disabled={isDead}
                               className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 border ${
                                 selectedPokemon.status === s
                                   ? 'border-primary bg-primary/10 text-primary'
                                   : 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'
-                              }`}
+                              } ${isDead ? 'opacity-40 cursor-not-allowed' : ''}`}
                             >
                               {labels[s]}
                             </button>
@@ -192,11 +281,92 @@ export default function PokedexPage() {
                         })}
                       </div>
                     </div>
+
+                    {/* Mark as dead button */}
+                    {!isDead && (
+                      <button
+                        onClick={() => handleMarkDead(selectedPokemon)}
+                        disabled={loadingDeath}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive font-semibold text-sm hover:bg-destructive/20 transition-all duration-150 active:scale-[0.98]"
+                      >
+                        <Skull className="w-4 h-4" />
+                        {loadingDeath ? 'Marcando...' : 'Marcar como muerto'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </>
             );
           })()}
+        </DialogContent>
+      </Dialog>
+
+      {/* Death linked modal */}
+      <Dialog open={deathModalOpen} onOpenChange={v => { if (!v) { setDeathModalOpen(false); setLinkedCaptures([]); } }}>
+        <DialogContent className="rounded-3xl glass-card-elevated max-w-sm max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading flex items-center gap-2 text-destructive">
+              <Skull className="w-5 h-5" />
+              Pokémon muerto
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedPokemon && (
+            <div className="flex flex-col items-center gap-4 py-2">
+              <img
+                src={getPokemonArtwork(selectedPokemon.speciesId)}
+                alt={selectedPokemon.species}
+                className="w-24 h-24 object-contain grayscale opacity-50"
+                onError={(e) => { (e.target as HTMLImageElement).src = selectedPokemon.imageUrl; }}
+              />
+              <p className="text-sm font-semibold text-center">
+                {selectedPokemon.species}
+                {selectedPokemon.nickname && <span className="text-muted-foreground ml-1">"{selectedPokemon.nickname}"</span>}
+                <span className="block text-xs text-muted-foreground mt-0.5">ha muerto</span>
+              </p>
+
+              <div className="w-full border-t border-border pt-3">
+                {linkedCaptures.length > 0 ? (
+                  <>
+                    <p className="text-xs text-muted-foreground mb-3 text-center">
+                      Este Pokémon estaba vinculado con los siguientes Pokémon del otro jugador:
+                    </p>
+                    <div className="space-y-2">
+                      {linkedCaptures.map(cap => {
+                        const player = run.players.find(p => p.id === cap.player_id);
+                        return (
+                          <div key={cap.id} className="flex items-center gap-3 bg-muted/50 rounded-xl px-3 py-2.5 border border-border/50">
+                            <img
+                              src={cap.species_id ? getPokemonSprite(cap.species_id) : cap.image_url || '/placeholder.svg'}
+                              alt={cap.species}
+                              className="w-10 h-10 object-contain"
+                              onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold truncate">{cap.species}</p>
+                              {cap.nickname && <p className="text-xs text-muted-foreground truncate">"{cap.nickname}"</p>}
+                            </div>
+                            {player && <PlayerBadge player={player} size="sm" />}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    Este Pokémon no tiene Pokémon vinculados de otros jugadores.
+                  </p>
+                )}
+              </div>
+
+              <button
+                onClick={() => { setDeathModalOpen(false); setLinkedCaptures([]); setSelectedPokemon(null); }}
+                className="w-full gradient-primary text-primary-foreground font-semibold py-2.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
+              >
+                Entendido
+              </button>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </GameLayout>

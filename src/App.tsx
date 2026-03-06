@@ -11,7 +11,6 @@ import DashboardPage from "./pages/DashboardPage";
 import RoutesPage from "./pages/RoutesPage";
 import PokedexPage from "./pages/PokedexPage";
 import PlayersPage from "./pages/PlayersPage";
-import ItemsPage from "./pages/ItemsPage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
@@ -36,7 +35,6 @@ const App = () => (
           <Route path="/routes" element={<ProtectedRoute><RoutesPage /></ProtectedRoute>} />
           <Route path="/pokedex" element={<ProtectedRoute><PokedexPage /></ProtectedRoute>} />
           <Route path="/players" element={<ProtectedRoute><PlayersPage /></ProtectedRoute>} />
-          <Route path="/items" element={<ProtectedRoute><ItemsPage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
