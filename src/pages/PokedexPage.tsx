@@ -176,6 +176,7 @@ export default function PokedexPage() {
           ))}
         </div>
 
+        {run.players.length > 1 && (
           <div className="flex gap-2">
             <button
               onClick={() => setPlayerFilter('all')}
