@@ -158,7 +158,24 @@ export default function PokedexPage() {
           ))}
         </div>
 
-        {run.players.length > 1 && (
+        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+          <button
+            onClick={() => setGenFilter(null)}
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === null ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'}`}
+          >
+            Todas
+          </button>
+          {GENERATIONS.map(g => (
+            <button
+              key={g.id}
+              onClick={() => setGenFilter(g.id)}
+              className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === g.id ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'}`}
+            >
+              {g.name}
+            </button>
+          ))}
+        </div>
+
           <div className="flex gap-2">
             <button
               onClick={() => setPlayerFilter('all')}
