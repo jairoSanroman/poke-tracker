@@ -81,41 +81,41 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
   const CompanionSection = () => {
     if (!selectedPlayer) return null;
     return (
-      <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-3">
+      <div className="rounded-lg border-2 border-primary/20 bg-primary/[0.04] p-3">
         <div className="flex items-center gap-1.5 mb-2.5">
           <Users className="w-3.5 h-3.5 text-primary" />
-          <span className="text-xs font-semibold text-primary">Capturas de compañeros en esta ruta</span>
+          <span className="text-xs font-bold text-primary font-body">Capturas de compañeros en esta ruta</span>
         </div>
         {hasCompanionCaptures ? (
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
             {companionCaptures.map(({ capture, player, pokemon }) => (
-              <div key={capture.playerId} className="flex-shrink-0 w-[130px] rounded-xl border border-primary/15 bg-card/80 p-2.5 flex flex-col items-center gap-1.5 relative">
+              <div key={capture.playerId} className="flex-shrink-0 w-[130px] rounded-lg border-2 border-primary/15 bg-card/80 p-2.5 flex flex-col items-center gap-1.5 relative">
                 <div className="absolute top-1.5 left-1.5"><Link2 className="w-3 h-3 text-primary/50" /></div>
                 <div className="absolute top-1.5 right-1.5">{player && <PlayerBadge player={player} size="sm" />}</div>
                 {pokemon ? (
                   <>
                     <img src={pokemon.imageUrl} alt={pokemon.species} className="w-12 h-12 pixelated mt-1" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                    <span className="text-[11px] font-semibold text-center leading-tight">{pokemon.species}</span>
-                    {pokemon.nickname && <span className="text-[9px] text-muted-foreground truncate max-w-full">"{pokemon.nickname}"</span>}
+                    <span className="text-[11px] font-bold text-center leading-tight font-body">{pokemon.species}</span>
+                    {pokemon.nickname && <span className="text-[9px] text-muted-foreground truncate max-w-full font-body">"{pokemon.nickname}"</span>}
                   </>
                 ) : (
                   <div className="w-12 h-12 mt-1 rounded-lg bg-muted/50 flex items-center justify-center"><X className="w-4 h-4 text-muted-foreground/50" /></div>
                 )}
-                <span className={`status-badge text-[9px] ${capture.result === 'captured' ? 'status-captured' : capture.result === 'failed' ? 'status-failed' : capture.result === 'ko' ? 'status-ko' : 'bg-muted text-muted-foreground'}`}>
+                <span className={`status-badge text-[9px] ${capture.result === 'captured' ? 'status-captured' : capture.result === 'failed' ? 'status-failed' : capture.result === 'ko' ? 'status-ko' : 'bg-muted text-muted-foreground border-border'}`}>
                   {capture.result === 'captured' ? 'Capturado' : capture.result === 'failed' ? 'Fallo' : capture.result === 'ko' ? 'KO' : 'Repetido'}
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-3 rounded-xl bg-muted/30">
-            <p className="text-[11px] text-muted-foreground">Aún nadie ha capturado nada aquí</p>
+          <div className="text-center py-3 rounded-lg bg-muted/30">
+            <p className="text-[11px] text-muted-foreground font-body">Aún nadie ha capturado nada aquí</p>
           </div>
         )}
         {hasCompanionCaptures && result === 'captured' && (
           <div className="flex items-center gap-1.5 mt-2.5 px-1">
             <Link2 className="w-3 h-3 text-primary" />
-            <span className="text-[10px] text-primary/80 font-medium">Tu captura se vinculará a este grupo de ruta</span>
+            <span className="text-[10px] text-primary/80 font-bold font-body">Tu captura se vinculará a este grupo de ruta</span>
           </div>
         )}
       </div>
@@ -124,12 +124,12 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) reset(); onOpenChange(v); }}>
-      <DialogContent className="max-w-md mx-auto rounded-3xl glass-card-elevated border-border/50 max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-md mx-auto rounded-xl glass-card-elevated pokedex-border max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle className="font-heading text-lg">
+          <DialogTitle className="font-heading text-[10px] leading-relaxed">
             {step === 'player' ? 'Seleccionar jugador' : step === 'pokemon' ? 'Elegir Pokémon' : 'Detalles de captura'}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground">{routeName}</p>
+          <p className="text-sm text-muted-foreground font-body">{routeName}</p>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto">
@@ -137,9 +137,9 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
             <div className="space-y-4 py-2">
               <div className="grid grid-cols-2 gap-3">
                 {players.map(player => (
-                  <button key={player.id} onClick={() => { setSelectedPlayer(player.id); setStep('pokemon'); }} className="glass-card p-4 flex flex-col items-center gap-2 hover:border-primary/50 transition-all duration-150 active:scale-95">
+                  <button key={player.id} onClick={() => { setSelectedPlayer(player.id); setStep('pokemon'); }} className="glass-card p-4 flex flex-col items-center gap-2 pokemon-hover transition-all duration-150 active:scale-95 border-2 border-border">
                     <PlayerBadge player={player} size="lg" />
-                    <span className="text-sm font-medium">{player.initials}</span>
+                    <span className="text-sm font-bold font-body">{player.initials}</span>
                   </button>
                 ))}
               </div>
@@ -147,10 +147,10 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
                 const allCaptures = run.routes.find(r => r.id === routeId)?.captures || [];
                 if (allCaptures.length === 0) return null;
                 return (
-                  <div className="rounded-2xl border border-border/50 bg-muted/30 p-3">
+                  <div className="rounded-lg border-2 border-border bg-muted/30 p-3">
                     <div className="flex items-center gap-1.5 mb-2">
                       <Link2 className="w-3.5 h-3.5 text-muted-foreground" />
-                      <span className="text-xs font-medium text-muted-foreground">Capturas en esta ruta</span>
+                      <span className="text-xs font-bold text-muted-foreground font-body">Capturas en esta ruta</span>
                     </div>
                     <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                       {allCaptures.map(c => {
@@ -158,10 +158,10 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
                         const pk = run.pokemon.find(pm => pm.id === c.pokemonId);
                         if (!p) return null;
                         return (
-                          <div key={c.playerId} className="flex-shrink-0 flex items-center gap-2 rounded-xl bg-card/70 border border-border/40 px-3 py-2">
+                          <div key={c.playerId} className="flex-shrink-0 flex items-center gap-2 rounded-lg bg-card/70 border-2 border-border px-3 py-2">
                             <PlayerBadge player={p} size="sm" />
                             {pk && <img src={pk.imageUrl} alt={pk.species} className="w-7 h-7 pixelated" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />}
-                            <span className="text-[11px] font-medium">{pk ? pk.species : 'Fallo'}</span>
+                            <span className="text-[11px] font-bold font-body">{pk ? pk.species : 'Fallo'}</span>
                           </div>
                         );
                       })}
@@ -175,11 +175,11 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
           {step === 'pokemon' && (
             <div className="flex flex-col gap-3 min-h-0">
               <CompanionSection />
-              <Input placeholder="Buscar Pokémon..." value={search} onChange={e => setSearch(e.target.value)} className="rounded-xl" autoFocus />
+              <Input placeholder="Buscar Pokémon..." value={search} onChange={e => setSearch(e.target.value)} className="rounded-md border-2 font-body" autoFocus />
               <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
                 <button
                   onClick={() => setGenFilter(null)}
-                  className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === null ? 'gradient-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+                  className={`px-2.5 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all border font-body ${genFilter === null ? 'bg-accent text-accent-foreground border-accent' : 'bg-muted text-muted-foreground border-border'}`}
                 >
                   Todas
                 </button>
@@ -187,28 +187,28 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
                   <button
                     key={g.id}
                     onClick={() => setGenFilter(g.id)}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${genFilter === g.id ? 'gradient-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all border font-body ${genFilter === g.id ? 'bg-accent text-accent-foreground border-accent' : 'bg-muted text-muted-foreground border-border'}`}
                   >
                     {g.name}
                   </button>
                 ))}
               </div>
               {loadingSpecies ? (
-                <p className="text-center text-sm text-muted-foreground py-8">Cargando Pokémon...</p>
+                <p className="text-center text-sm text-muted-foreground py-8 font-body">Cargando Pokémon...</p>
               ) : (
                 <div className="grid grid-cols-3 gap-2 pr-1 max-h-[35vh] overflow-y-auto">
                   {filteredPokemon.slice(0, 60).map(poke => (
                     <button
                       key={poke.id}
                       onClick={() => { setSelectedPokemon(poke.id); setStep('details'); }}
-                      className={`glass-card p-2 flex flex-col items-center gap-1 hover:border-primary/50 transition-all duration-150 active:scale-95 ${selectedPokemon === poke.id ? 'border-primary ring-2 ring-primary/20' : ''}`}
+                      className={`glass-card p-2 flex flex-col items-center gap-1 pokemon-hover transition-all duration-150 active:scale-95 border-2 ${selectedPokemon === poke.id ? 'border-accent ring-2 ring-accent/30' : 'border-border'}`}
                     >
                       <img src={getPokemonSprite(poke.id)} alt={poke.name} className="w-12 h-12 pixelated" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                      <span className="text-[10px] font-medium text-center leading-tight">{poke.name}</span>
+                      <span className="text-[10px] font-bold text-center leading-tight font-body">{poke.name}</span>
                     </button>
                   ))}
                   {filteredPokemon.length > 60 && (
-                    <p className="col-span-3 text-center text-[10px] text-muted-foreground py-2">
+                    <p className="col-span-3 text-center text-[10px] text-muted-foreground py-2 font-body">
                       +{filteredPokemon.length - 60} más. Usa el buscador para refinar.
                     </p>
                   )}
@@ -221,27 +221,28 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
             <div className="flex flex-col gap-4 py-2">
               <CompanionSection />
               <div className="flex items-center gap-3 justify-center">
-                <img src={getPokemonSprite(selectedPokemon)} alt="" className="w-16 h-16 pixelated" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                <div className="w-16 h-16 rounded-lg bg-muted/30 flex items-center justify-center border-2 border-border">
+                  <img src={getPokemonSprite(selectedPokemon)} alt="" className="w-14 h-14 pixelated" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                </div>
                 <div>
-                  <p className="font-heading font-semibold">{allSpecies.find(p => p.id === selectedPokemon)?.name}</p>
-                  <p className="text-xs text-muted-foreground">#{String(selectedPokemon).padStart(4, '0')}</p>
+                  <p className="font-heading text-[9px] leading-relaxed">{allSpecies.find(p => p.id === selectedPokemon)?.name}</p>
+                  <p className="text-xs text-muted-foreground font-body">#{String(selectedPokemon).padStart(4, '0')}</p>
                 </div>
               </div>
-              <Input placeholder="Mote (opcional)" value={nickname} onChange={e => setNickname(e.target.value)} className="rounded-xl text-center" />
+              <Input placeholder="Mote (opcional)" value={nickname} onChange={e => setNickname(e.target.value)} className="rounded-md text-center border-2 font-body" />
               <div className="grid grid-cols-2 gap-2">
                 {CAPTURE_RESULTS.map(cr => (
                   <button
                     key={cr.value}
                     onClick={() => setResult(cr.value)}
-                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition-all duration-150 ${cr.className} ${result === cr.value ? 'ring-2 ring-offset-1 ring-offset-background' : 'opacity-60'}`}
-                    style={result === cr.value ? { boxShadow: '0 0 0 2px currentColor' } : {}}
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-md border-2 text-sm font-bold transition-all duration-150 font-body ${cr.className} ${result === cr.value ? 'ring-2 ring-offset-1 ring-offset-background scale-[1.02]' : 'opacity-60'}`}
                   >
                     {cr.icon}
                     {cr.label}
                   </button>
                 ))}
               </div>
-              <button onClick={handleConfirm} className="w-full gradient-primary text-primary-foreground font-semibold py-3 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-[0.98] flex items-center justify-center gap-2">
+              <button onClick={handleConfirm} className="w-full bg-accent text-accent-foreground font-bold py-3 rounded-md transition-all duration-150 hover:brightness-110 active:translate-y-0.5 flex items-center justify-center gap-2 border-2 border-accent-foreground/10 font-body" style={{ boxShadow: '3px 3px 0px 0px rgba(0,0,0,0.15)' }}>
                 {hasCompanionCaptures && result === 'captured' && <Link2 className="w-4 h-4" />}
                 Confirmar captura
               </button>

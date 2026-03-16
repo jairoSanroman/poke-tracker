@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
-import { Eye, EyeOff, Sparkles, LogIn } from 'lucide-react';
+import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 export default function LoginPage() {
@@ -27,40 +27,45 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-      <div className="absolute inset-0 gradient-header opacity-20" />
-      
+    <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 dot-texture">
       <div className={`relative z-10 w-full max-w-sm space-y-8 ${shaking ? 'animate-shake' : ''}`}>
-        <div className="text-center space-y-2">
-          <div className="w-20 h-20 rounded-3xl gradient-primary mx-auto flex items-center justify-center shadow-lg mb-4">
-            <Sparkles className="w-10 h-10 text-primary-foreground" />
+        <div className="text-center space-y-3">
+          <div className="w-20 h-20 rounded-xl bg-accent mx-auto flex items-center justify-center border-2 border-accent-foreground/10" style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,0.2)' }}>
+            <img
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+              alt="Pokéball"
+              className="w-12 h-12 pixelated"
+            />
           </div>
-          <h1 className="font-heading text-2xl font-bold">Pokémon Añil</h1>
-          <p className="text-sm text-muted-foreground">Tracker · Inicia sesión para continuar</p>
+          <div>
+            <h1 className="font-heading text-sm text-primary-foreground leading-relaxed">Pokémon Añil</h1>
+            <p className="font-heading text-[8px] text-accent mt-1">Tracker</p>
+          </div>
+          <p className="text-sm text-primary-foreground/60 font-body">Inicia sesión para continuar</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-card-elevated p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="glass-card-elevated p-6 space-y-4 border-2 border-accent/30">
           <div className="space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Usuario</label>
+            <label className="text-[10px] font-heading text-muted-foreground uppercase">Usuario</label>
             <Input
               value={username}
               onChange={e => { setUsername(e.target.value); setError(''); }}
               placeholder="Tu usuario"
-              className="rounded-xl h-12"
+              className="rounded-md h-12 border-2 font-body"
               autoFocus
               autoComplete="username"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Contraseña</label>
+            <label className="text-[10px] font-heading text-muted-foreground uppercase">Contraseña</label>
             <div className="relative">
               <Input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => { setPassword(e.target.value); setError(''); }}
                 placeholder="Tu contraseña"
-                className="rounded-xl h-12 pr-12"
+                className="rounded-md h-12 pr-12 border-2 font-body"
                 autoComplete="current-password"
               />
               <button
@@ -74,7 +79,7 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="bg-destructive/10 text-destructive text-sm font-medium px-4 py-2.5 rounded-xl animate-slide-up">
+            <div className="bg-destructive/10 text-destructive text-sm font-bold px-4 py-2.5 rounded-md animate-slide-up border border-destructive/30 font-body">
               {error}
             </div>
           )}
@@ -82,7 +87,8 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={!username.trim() || !password.trim()}
-            className="w-full gradient-primary text-primary-foreground font-semibold py-3.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-[0.98] disabled:opacity-40 flex items-center justify-center gap-2"
+            className="w-full bg-accent text-accent-foreground font-bold py-3.5 rounded-md transition-all duration-150 hover:brightness-110 active:translate-y-0.5 disabled:opacity-40 flex items-center justify-center gap-2 border-2 border-accent-foreground/10 font-body text-sm"
+            style={{ boxShadow: '3px 3px 0px 0px rgba(0,0,0,0.15)' }}
           >
             <LogIn className="w-5 h-5" />
             Entrar

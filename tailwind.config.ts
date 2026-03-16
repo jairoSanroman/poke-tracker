@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        heading: ['"Press Start 2P"', 'monospace'],
+        body: ['"Nunito"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -69,6 +69,9 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "pokemon-red": "hsl(0 80% 40%)",
+        "pokemon-yellow": "hsl(46 100% 50%)",
+        "pokemon-blue": "hsl(215 65% 26%)",
       },
       borderRadius: {
         "2xl": "1rem",

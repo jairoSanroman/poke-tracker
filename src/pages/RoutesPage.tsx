@@ -42,7 +42,7 @@ export default function RoutesPage() {
             placeholder="Buscar ruta..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="pl-9 rounded-xl"
+            className="pl-9 rounded-md border-2 font-body"
           />
         </div>
 
@@ -51,10 +51,10 @@ export default function RoutesPage() {
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-150 ${
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all duration-150 border font-body ${
                 filter === f.value
-                  ? 'gradient-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'bg-muted text-muted-foreground border-border hover:bg-muted/80'
               }`}
             >
               {f.label}
@@ -75,7 +75,7 @@ export default function RoutesPage() {
         </div>
 
         {filteredRoutes.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground py-8">No se encontraron rutas</p>
+          <p className="text-center text-sm text-muted-foreground py-8 font-body">No se encontraron rutas</p>
         )}
       </div>
 
