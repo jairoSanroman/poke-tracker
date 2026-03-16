@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Map, BookOpen, Settings, LogOut, Sparkles } from 'lucide-react';
+import { Home, Map, BookOpen, Settings, LogOut } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,40 +20,45 @@ export function DesktopSidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 bg-sidebar border-r border-sidebar-border h-screen sticky top-0">
-      <div className="p-5 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center">
-          <Sparkles className="w-5 h-5 text-primary-foreground" />
+    <aside className="hidden lg:flex flex-col w-64 bg-sidebar border-r-2 border-sidebar-border h-screen sticky top-0">
+      {/* Logo area */}
+      <div className="p-5 flex items-center gap-3 border-b-2 border-sidebar-border">
+        <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
+          <img
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+            alt="Pokéball"
+            className="w-7 h-7 pixelated"
+          />
         </div>
         <div>
-          <p className="font-heading font-bold text-sm text-sidebar-foreground">Pokémon Añil</p>
-          <p className="text-[10px] text-muted-foreground">Tracker</p>
+          <p className="font-heading text-[9px] text-sidebar-foreground leading-relaxed">Pokémon</p>
+          <p className="font-heading text-[8px] text-sidebar-primary leading-relaxed">Añil Tracker</p>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-2 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+              `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-bold transition-all duration-150 ${
                 isActive
-                  ? 'bg-sidebar-accent text-sidebar-primary font-semibold'
-                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  ? 'bg-sidebar-accent text-sidebar-primary border-l-4 border-sidebar-primary'
+                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground border-l-4 border-transparent'
               }`
             }
           >
             <Icon className="w-5 h-5" />
-            <span>{label}</span>
+            <span className="font-body">{label}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="p-3 border-t border-sidebar-border">
+      <div className="p-3 border-t-2 border-sidebar-border">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-destructive/80 hover:bg-destructive/10 hover:text-destructive transition-all duration-150"
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-bold text-destructive/80 hover:bg-destructive/10 hover:text-destructive transition-all duration-150 font-body"
         >
           <LogOut className="w-5 h-5" />
           <span>Cerrar sesión</span>

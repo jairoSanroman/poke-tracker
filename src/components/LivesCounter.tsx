@@ -16,50 +16,56 @@ export function LivesCounter() {
   };
 
   const livesPercent = run.maxLives > 0 ? (run.lives / run.maxLives) * 100 : 0;
-  const isLow = livesPercent <= 30;
-  const isCritical = livesPercent <= 10;
+  const hpColor = livesPercent > 50 ? 'hp-green' : livesPercent > 20 ? 'hp-yellow' : 'hp-red';
 
   return (
-    <div className="glass-card p-3 flex items-center gap-3">
-      <div className={`flex items-center gap-1.5 ${animating ? 'animate-bounce-subtle' : ''}`}>
-        <Heart
-          className={`w-5 h-5 transition-colors duration-200 ${
-            isCritical ? 'text-destructive fill-destructive' :
-            isLow ? 'text-warning fill-warning' :
-            'text-accent fill-accent'
-          }`}
-        />
-        <span className={`text-2xl font-heading font-bold tabular-nums transition-colors duration-200 ${
-          isCritical ? 'text-destructive' : isLow ? 'text-warning' : 'text-foreground'
-        }`}>
-          {run.lives}
-        </span>
-        <span className="text-sm text-muted-foreground">/ {run.maxLives}</span>
+    <div className="glass-card p-3">
+      {/* HP Label row */}
+      <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center gap-1.5">
+          <span className="font-heading text-[8px] text-muted-foreground">HP</span>
+          <Heart
+            className={`w-4 h-4 transition-colors duration-150 ${
+              livesPercent <= 20 ? 'text-destructive fill-destructive' :
+              livesPercent <= 50 ? 'text-warning fill-warning' :
+              'text-success fill-success'
+            } ${animating ? 'animate-bounce-subtle' : ''}`}
+          />
+        </div>
+        <div className="flex items-center gap-1">
+          <span className={`font-heading text-[10px] tabular-nums transition-colors duration-150 ${
+            livesPercent <= 20 ? 'text-destructive' : livesPercent <= 50 ? 'text-warning' : 'text-foreground'
+          }`}>
+            {run.lives}
+          </span>
+          <span className="font-heading text-[8px] text-muted-foreground">/ {run.maxLives}</span>
+        </div>
       </div>
 
-      <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-300 ${
-            isCritical ? 'bg-destructive' : isLow ? 'bg-warning' : 'gradient-accent'
-          }`}
-          style={{ width: `${livesPercent}%` }}
-        />
-      </div>
+      {/* HP Bar - Pokémon style */}
+      <div className="flex items-center gap-2">
+        <div className="hp-bar-container flex-1">
+          <div
+            className={`hp-bar-fill ${hpColor}`}
+            style={{ width: `${livesPercent}%` }}
+          />
+        </div>
 
-      <div className="flex items-center gap-1">
-        <button
-          onClick={() => handleChange(-1)}
-          disabled={run.lives <= 0}
-          className="touch-target w-9 h-9 rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 disabled:opacity-30 transition-colors duration-150"
-        >
-          <Minus className="w-4 h-4 mx-auto" />
-        </button>
-        <button
-          onClick={() => handleChange(1)}
-          className="touch-target w-9 h-9 rounded-xl bg-success/10 text-success hover:bg-success/20 transition-colors duration-150"
-        >
-          <Plus className="w-4 h-4 mx-auto" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => handleChange(-1)}
+            disabled={run.lives <= 0}
+            className="touch-target w-8 h-8 rounded-md bg-destructive/10 text-destructive hover:bg-destructive/20 disabled:opacity-30 transition-colors duration-150 border border-destructive/20"
+          >
+            <Minus className="w-3.5 h-3.5 mx-auto" />
+          </button>
+          <button
+            onClick={() => handleChange(1)}
+            className="touch-target w-8 h-8 rounded-md bg-success/10 text-success hover:bg-success/20 transition-colors duration-150 border border-success/20"
+          >
+            <Plus className="w-3.5 h-3.5 mx-auto" />
+          </button>
+        </div>
       </div>
     </div>
   );

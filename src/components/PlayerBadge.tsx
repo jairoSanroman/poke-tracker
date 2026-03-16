@@ -21,19 +21,19 @@ export function PlayerBadge({ player, size = 'md', showLabel = false }: PlayerBa
         <img
           src={player.avatar}
           alt={player.initials}
-          className={`${s.container} rounded-full object-cover ring-2 ring-offset-1 ring-offset-background transition-transform duration-150 hover:scale-110`}
-          style={{ ringColor: player.color } as any}
+          className={`${s.container} rounded-full object-cover border-2 transition-transform duration-150 hover:scale-110`}
+          style={{ borderColor: player.color }}
         />
       ) : (
         <div
-          className={`${s.container} rounded-full flex items-center justify-center font-bold text-primary-foreground shadow-sm transition-transform duration-150 hover:scale-110 ${s.text}`}
+          className={`${s.container} rounded-full flex items-center justify-center font-bold text-primary-foreground border-2 border-foreground/10 transition-transform duration-150 hover:scale-110 ${s.text} font-body`}
           style={{ backgroundColor: player.color }}
         >
           {player.initials}
         </div>
       )}
       {showLabel && (
-        <span className="text-sm font-medium text-foreground">{player.initials}</span>
+        <span className="text-sm font-bold text-foreground font-body">{player.initials}</span>
       )}
     </div>
   );

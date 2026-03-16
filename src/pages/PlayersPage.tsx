@@ -63,16 +63,16 @@ export default function PlayersPage() {
       <div className="space-y-4">
         <button
           onClick={() => { setAvatarPreview(getRandomAvatar()); setShowAdd(true); }}
-          className="w-full glass-card p-4 flex items-center gap-3 hover:border-primary/40 transition-all duration-150 active:scale-[0.98]"
+          className="w-full glass-card p-4 flex items-center gap-3 pokemon-hover active:scale-[0.98] border-2 border-accent/30"
         >
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-            <Plus className="w-5 h-5 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center border border-accent-foreground/10">
+            <Plus className="w-5 h-5 text-accent-foreground" />
           </div>
-          <span className="font-heading font-semibold text-sm">Añadir jugador</span>
+          <span className="font-heading text-[8px] leading-relaxed">Añadir jugador</span>
         </button>
 
         {run.players.length === 0 ? (
-          <p className="text-center text-sm text-muted-foreground py-12">No hay jugadores. ¡Añade al menos uno!</p>
+          <p className="text-center text-sm text-muted-foreground py-12 font-body">No hay jugadores. ¡Añade al menos uno!</p>
         ) : (
           <div className="space-y-3">
             {run.players.map(player => {
@@ -81,7 +81,7 @@ export default function PlayersPage() {
               const ko = playerPokemon.filter(p => p.status === 'ko').length;
 
               return (
-                <div key={player.id} className="glass-card p-4 flex items-center gap-3 animate-slide-up">
+                <div key={player.id} className="glass-card p-4 flex items-center gap-3 animate-slide-up border-2 border-border pokemon-hover">
                   <button onClick={() => setEditingPlayer(player)} className="relative group">
                     <PlayerBadge player={player} size="lg" />
                     <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover:bg-foreground/20 transition-colors flex items-center justify-center">
@@ -89,14 +89,14 @@ export default function PlayersPage() {
                     </div>
                   </button>
                   <div className="flex-1">
-                    <p className="font-heading font-semibold">{player.initials}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="font-heading text-[8px] leading-relaxed">{player.initials}</p>
+                    <p className="text-xs text-muted-foreground font-body">
                       {captured} capturados · {ko} KO
                     </p>
                   </div>
                   <button
                     onClick={() => removePlayer(run.id, player.id)}
-                    className="touch-target w-8 h-8 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors duration-150 flex items-center justify-center"
+                    className="touch-target w-8 h-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors duration-150 flex items-center justify-center"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -109,9 +109,9 @@ export default function PlayersPage() {
 
       {/* Add player dialog */}
       <Dialog open={showAdd} onOpenChange={setShowAdd}>
-        <DialogContent className="rounded-3xl glass-card-elevated max-w-sm">
+        <DialogContent className="rounded-xl glass-card-elevated max-w-sm border-2 border-accent/30">
           <DialogHeader>
-            <DialogTitle className="font-heading">Nuevo jugador</DialogTitle>
+            <DialogTitle className="font-heading text-[10px] leading-relaxed">Nuevo jugador</DialogTitle>
           </DialogHeader>
           <form onSubmit={e => { e.preventDefault(); handleAdd(); }} className="space-y-4 pt-2">
             <div className="flex flex-col items-center gap-2">
@@ -119,7 +119,7 @@ export default function PlayersPage() {
                 <img
                   src={avatarPreview}
                   alt="Avatar"
-                  className="w-20 h-20 rounded-full object-cover bg-muted"
+                  className="w-20 h-20 rounded-full object-cover bg-muted border-2 border-border"
                   onError={() => setAvatarPreview(getRandomAvatar())}
                 />
                 <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover:bg-foreground/30 transition-colors flex items-center justify-center gap-1">
@@ -140,27 +140,27 @@ export default function PlayersPage() {
                 </div>
               </div>
               <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={e => handleFileUpload(e)} />
-              <p className="text-[10px] text-muted-foreground">Toca para cambiar avatar</p>
+              <p className="text-[10px] text-muted-foreground font-body">Toca para cambiar avatar</p>
             </div>
 
             <Input
               placeholder="Iniciales (2-3 letras)"
               value={initials}
               onChange={e => setInitials(e.target.value.slice(0, 3))}
-              className="rounded-xl text-center text-xl font-heading font-bold uppercase"
+              className="rounded-md text-center text-xl font-heading uppercase border-2"
               maxLength={3}
               autoFocus
             />
             <div>
-              <p className="text-xs text-muted-foreground mb-2">Color</p>
+              <p className="text-xs text-muted-foreground mb-2 font-body">Color</p>
               <div className="flex gap-2 flex-wrap">
                 {PLAYER_COLORS.map((color, i) => (
                   <button
                     key={color}
                     type="button"
                     onClick={() => setSelectedColor(i)}
-                    className={`w-9 h-9 rounded-full transition-all duration-150 ${
-                      selectedColor === i ? 'ring-2 ring-offset-2 ring-offset-background ring-primary scale-110' : 'hover:scale-105'
+                    className={`w-9 h-9 rounded-full transition-all duration-150 border-2 ${
+                      selectedColor === i ? 'ring-2 ring-offset-2 ring-offset-background ring-accent scale-110 border-foreground/30' : 'hover:scale-105 border-transparent'
                     }`}
                     style={{ backgroundColor: color }}
                   />
@@ -170,7 +170,8 @@ export default function PlayersPage() {
             <button
               type="submit"
               disabled={initials.trim().length < 2}
-              className="w-full gradient-primary text-primary-foreground font-semibold py-3 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-[0.98] disabled:opacity-40"
+              className="w-full bg-accent text-accent-foreground font-bold py-3 rounded-md transition-all duration-150 hover:brightness-110 active:translate-y-0.5 disabled:opacity-40 border-2 border-accent-foreground/10 font-body"
+              style={{ boxShadow: '3px 3px 0px 0px rgba(0,0,0,0.15)' }}
             >
               Añadir
             </button>
@@ -180,18 +181,18 @@ export default function PlayersPage() {
 
       {/* Edit player avatar dialog */}
       <Dialog open={!!editingPlayer} onOpenChange={v => { if (!v) setEditingPlayer(null); }}>
-        <DialogContent className="rounded-3xl glass-card-elevated max-w-sm">
+        <DialogContent className="rounded-xl glass-card-elevated max-w-sm border-2 border-border">
           <DialogHeader>
-            <DialogTitle className="font-heading">Editar avatar</DialogTitle>
+            <DialogTitle className="font-heading text-[10px] leading-relaxed">Editar avatar</DialogTitle>
           </DialogHeader>
           {editingPlayer && (
             <div className="flex flex-col items-center gap-4 py-2">
               <div className="relative group">
                 {editingPlayer.avatar ? (
-                  <img src={editingPlayer.avatar} alt={editingPlayer.initials} className="w-24 h-24 rounded-full object-cover bg-muted" />
+                  <img src={editingPlayer.avatar} alt={editingPlayer.initials} className="w-24 h-24 rounded-full object-cover bg-muted border-2 border-border" />
                 ) : (
                   <div
-                    className="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold text-primary-foreground"
+                    className="w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold text-primary-foreground border-2 border-foreground/20"
                     style={{ backgroundColor: editingPlayer.color }}
                   >
                     {editingPlayer.initials}
@@ -206,14 +207,14 @@ export default function PlayersPage() {
                     updatePlayer(activeRunId, editingPlayer.id, { avatar });
                     setEditingPlayer({ ...editingPlayer, avatar });
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-sm font-medium transition-all"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-muted hover:bg-muted/80 text-sm font-bold transition-all border-2 border-border font-body"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Aleatorio
                 </button>
                 <button
                   onClick={() => editFileRef.current?.click()}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-sm font-medium transition-all"
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-muted hover:bg-muted/80 text-sm font-bold transition-all border-2 border-border font-body"
                 >
                   <Camera className="w-4 h-4" />
                   Subir imagen
