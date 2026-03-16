@@ -1,73 +1,171 @@
-# Welcome to your Lovable project
+<div align="center">
 
-## Project info
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="60px"/>
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+# ⚔️ POKÉMON AÑIL TRACKER
 
-## How can I edit this code?
+### *"Un Nuzlocke compartido. Un destino vinculado."*
 
-There are several ways of editing your application.
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-**Use Lovable**
+[![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow?style=flat-square)]()
+[![Licencia](https://img.shields.io/badge/Licencia-MIT-blue?style=flat-square)]()
+[![Versión](https://img.shields.io/badge/Versión-1.0.0-red?style=flat-square)]()
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+<br/>
 
-Changes made via Lovable will be committed automatically to this repo.
+🔗 **[Ver la app en vivo →](https://indigo-run-log.lovable.app)**
 
-**Use your preferred IDE**
+</div>
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📖 ¿Qué es Pokémon Añil Tracker?
 
-Follow these steps:
+Tracker colaborativo en **tiempo real** para grupos de amigos que juegan runs de **Nuzlocke** y **Soul Link** juntos. Registra capturas ruta por ruta, vincula Pokémon entre compañeros y recibe una notificación cuando el destino actúe — porque en el Soul Link, ninguno cae solo.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+<div align="center">
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```
+🎮 Jugador 1          💀 Ruta 3          🎮 Jugador 2
+  Charizard    ══════ Soul Link ══════   Blastoise
+     ❌ muere                              ❌ también muere
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+</div>
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## ✨ Funcionalidades
+
+<table>
+<tr>
+<td width="50%">
+
+### ✅ Disponible ahora
+- 📍 Registro de capturas por ruta
+- 🔗 Vinculación Soul Link entre jugadores
+- 💀 Muerte en cadena automática
+- 📡 Notificaciones en tiempo real
+- 📜 Log de eventos de la run
+- 📕 Pokédex de capturas personal
+- 👥 Modo multijugador
+
+</td>
+<td width="50%">
+
+### 🔜 Próximamente
+- 🗺️ Mapa de progreso por región
+- 📊 Estadísticas detalladas de la run
+- ⚙️ Reglas personalizadas por partida
+- 🪦 Cementerio de caídos
+- 🔒 Modo espectador (solo lectura)
+- 🏆 Exportar resumen de la run
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Stack tecnológico
+
+| Tecnología | Uso |
+|:---:|:---|
+| ⚛️ **React 18 + TypeScript** | Interfaz de usuario |
+| ⚡ **Vite** | Bundler y servidor de desarrollo |
+| 🎨 **Tailwind CSS + shadcn/ui** | Estilos y componentes |
+| 🗄️ **Supabase** | Base de datos, auth y tiempo real |
+| 🔁 **Supabase Realtime** | Sincronización entre jugadores |
+
+---
+
+## 🚀 Ejecutar en local
+
+> Requisito: tener **Node.js** y **npm** instalados → [instalar con nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+```bash
+# 1️⃣  Clona el repositorio
+git clone https://github.com/jairoSanroman/poke-tracker.git
+
+# 2️⃣  Entra en el directorio
+cd poke-tracker
+
+# 3️⃣  Instala las dependencias
+npm install
+
+# 4️⃣  Crea tu archivo de variables de entorno
+cp .env.example .env
+# Edita .env con tus credenciales de Supabase
+
+# 5️⃣  Inicia el servidor de desarrollo
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+La app estará disponible en `http://localhost:5173` 🎉
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 🔐 Variables de entorno
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Crea un archivo `.env` en la raíz del proyecto con:
 
-## What technologies are used for this project?
+```env
+VITE_SUPABASE_URL=tu_url_de_supabase
+VITE_SUPABASE_ANON_KEY=tu_anon_key
+```
 
-This project is built with:
+> ⚠️ **Nunca subas el archivo `.env` a GitHub.** Ya está incluido en `.gitignore`.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 📁 Estructura del proyecto
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```
+poke-tracker/
+│
+├── 📂 src/
+│   ├── 📂 components/      # Componentes reutilizables
+│   ├── 📂 pages/           # Vistas principales (Dashboard, Rutas, Pokédex...)
+│   ├── 📂 hooks/           # Custom hooks (useRealtime, usePokemon...)
+│   ├── 📂 lib/             # Config de Supabase y utilidades
+│   └── 📂 data/            # Datos estáticos (Pokémon, rutas por generación)
+│
+├── 📂 supabase/
+│   └── 📂 migrations/      # Migraciones de base de datos
+│
+└── 📂 public/              # Assets estáticos
+```
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 🤝 ¿Cómo contribuir?
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Haz un **fork** del repositorio
+2. Crea una rama → `git checkout -b feature/mi-mejora`
+3. Haz commit → `git commit -m '✨ Añade mi mejora'`
+4. Sube la rama → `git push origin feature/mi-mejora`
+5. Abre un **Pull Request**
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+<div align="center">
+
+### 🪦 *"No importa cuántos caigan — lo que importa es llegar al Alto Mando."*
+
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" width="48px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" width="48px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" width="48px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" width="48px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" width="48px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png" width="48px"/>
+
+<br/>
+
+*Hecho con ❤️ para sobrevivir (o no) al Nuzlocke*
+
+</div>
