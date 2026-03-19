@@ -31,6 +31,7 @@ export default function PokedexPage() {
 
   const { data: dbCaptures = [] } = useRunCaptures(activeRunId);
   const updateStatus = useUpdateCaptureStatus();
+  const queryClient = useQueryClient();
   const insertCapture = useInsertCapture();
 
   useEffect(() => {
