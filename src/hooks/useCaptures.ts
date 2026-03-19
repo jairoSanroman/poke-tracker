@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -18,6 +19,26 @@ export interface CaptureRow {
 }
 
 export function useRunCaptures(runId: string | null) {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!runId) return;
+    const channel = supabase
+      .channel(`captures-${runId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'captures', filter: `run_id=eq.${runId}` },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['captures', runId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [runId, queryClient]);
+
   return useQuery({
     queryKey: ['captures', runId],
     queryFn: async () => {
