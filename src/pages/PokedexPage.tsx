@@ -86,17 +86,36 @@ export default function PokedexPage() {
     try {
       let dbCapture = dbCaptures.find(c => c.id === pokemon.id);
       if (!dbCapture) {
+        // Look up the DB route UUID by matching run_id and route name
+        const route = run.routes.find(r => r.id === pokemon.routeId);
+        const { data: dbRoutes } = await supabase
+          .from('routes')
+          .select('id')
+          .eq('run_id', activeRunId)
+          .eq('name', route?.name || pokemon.routeId)
+          .limit(1);
+        
+        const dbRouteId = dbRoutes?.[0]?.id;
+        if (!dbRouteId) {
+          // If no DB route found, just update local state and skip DB insert
+          updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
+          setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
+          setLinkedCaptures([]);
+          setDeathModalOpen(true);
+          return;
+        }
+
         await insertCapture.mutateAsync({
           id: pokemon.id,
           run_id: activeRunId,
           player_id: pokemon.playerId,
-          route_id: pokemon.routeId,
+          route_id: dbRouteId,
           species: pokemon.species,
           species_id: pokemon.speciesId,
           nickname: pokemon.nickname || '',
           image_url: pokemon.imageUrl,
           origin_type: 'route',
-          origin_id: pokemon.routeId,
+          origin_id: dbRouteId,
           status: 'dead',
         });
       } else {
@@ -108,21 +127,25 @@ export default function PokedexPage() {
       const originType = dbCapture?.origin_type || 'route';
       const originId = dbCapture?.origin_id || pokemon.routeId;
 
-      const { data: linked, error } = await supabase
+      const { data: linked, error: linkError } = await supabase
         .from('captures')
         .select('*')
         .eq('origin_type', originType)
         .eq('origin_id', originId)
         .neq('player_id', pokemon.playerId);
 
-      if (error) throw error;
+      if (linkError) {
+        console.warn('Error fetching linked captures:', linkError);
+        // Non-fatal: still show modal with empty linked list
+      }
 
       setLinkedCaptures(linked || []);
       setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
       setDeathModalOpen(true);
-    } catch (err) {
-      console.error(err);
-      toast.error('Error al marcar como muerto');
+    } catch (err: any) {
+      const msg = err?.message || err?.details || JSON.stringify(err);
+      console.error('Error al marcar como muerto:', err);
+      toast.error(`Error: ${msg}`);
     } finally {
       setLoadingDeath(false);
     }
