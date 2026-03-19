@@ -86,7 +86,6 @@ export default function PokedexPage() {
     try {
       let dbCapture = dbCaptures.find(c => c.id === pokemon.id);
       if (!dbCapture) {
-        // Look up the DB route UUID by matching run_id and route name
         const route = run.routes.find(r => r.id === pokemon.routeId);
         const { data: dbRoutes } = await supabase
           .from('routes')
@@ -97,7 +96,6 @@ export default function PokedexPage() {
         
         const dbRouteId = dbRoutes?.[0]?.id;
         if (!dbRouteId) {
-          // If no DB route found, just update local state and skip DB insert
           updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
           setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
           setLinkedCaptures([]);
@@ -118,14 +116,30 @@ export default function PokedexPage() {
           origin_id: dbRouteId,
           status: 'dead',
         });
+        dbCapture = {
+          id: pokemon.id,
+          run_id: activeRunId,
+          player_id: pokemon.playerId,
+          route_id: dbRouteId,
+          species: pokemon.species,
+          species_id: pokemon.speciesId,
+          nickname: pokemon.nickname || null,
+          image_url: pokemon.imageUrl,
+          origin_type: 'route',
+          origin_id: dbRouteId,
+          status: 'dead',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
       } else {
         await updateStatus.mutateAsync({ id: pokemon.id, status: 'dead' });
       }
 
       updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
 
-      const originType = dbCapture?.origin_type || 'route';
-      const originId = dbCapture?.origin_id || pokemon.routeId;
+      // Find linked Soul Link captures
+      const originType = dbCapture.origin_type;
+      const originId = dbCapture.origin_id;
 
       const { data: linked, error: linkError } = await supabase
         .from('captures')
@@ -136,10 +150,27 @@ export default function PokedexPage() {
 
       if (linkError) {
         console.warn('Error fetching linked captures:', linkError);
-        // Non-fatal: still show modal with empty linked list
       }
 
-      setLinkedCaptures(linked || []);
+      const linkedList = linked || [];
+
+      // Auto-kill all linked Soul Link captures
+      for (const lc of linkedList) {
+        if (lc.status !== 'dead') {
+          await supabase
+            .from('captures')
+            .update({ status: 'dead' })
+            .eq('id', lc.id);
+          const localPoke = run.pokemon.find(p => p.id === lc.id);
+          if (localPoke) {
+            updatePokemon(activeRunId, lc.id, { status: 'dead' as PokemonStatus });
+          }
+        }
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['captures', activeRunId] });
+
+      setLinkedCaptures(linkedList.map(lc => ({ ...lc, status: 'dead' })));
       setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
       setDeathModalOpen(true);
     } catch (err: any) {
