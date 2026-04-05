@@ -22,7 +22,7 @@ interface GameState {
   setLives: (runId: string, lives: number) => void;
 
   // Capture
-  addCapture: (runId: string, routeId: string, playerId: string, speciesId: number, species: string, nickname: string | undefined, result: CaptureResult) => void;
+  addCapture: (runId: string, routeId: string, playerId: string, speciesId: number, species: string, nickname: string | undefined, result: CaptureResult) => string;
   updatePokemon: (runId: string, pokemonId: string, updates: Partial<Pokemon>) => void;
   updateRouteCapture: (runId: string, routeId: string, playerId: string, result: CaptureResult) => void;
 
@@ -128,10 +128,10 @@ export const useGameStore = create<GameState>()(
       },
 
       addCapture: (runId, routeId, playerId, speciesId, species, nickname, result) => {
+        const pokemonId = crypto.randomUUID();
         set(state => ({
           runs: state.runs.map(run => {
             if (run.id !== runId) return run;
-            const pokemonId = crypto.randomUUID();
             const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${speciesId}.png`;
             const status: PokemonStatus = result === 'captured' ? 'captured' : result === 'ko' ? 'ko' : 'seen';
             const pokemon: Pokemon = {
@@ -162,6 +162,7 @@ export const useGameStore = create<GameState>()(
             };
           }),
         }));
+        return pokemonId;
       },
 
       updatePokemon: (runId, pokemonId, updates) => {
