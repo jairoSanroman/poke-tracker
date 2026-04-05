@@ -86,7 +86,7 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
         runId: activeRunId,
         playerId: selectedPlayer,
         routeName: route.name,
-        routeStatus: route.status,
+        routeStatus: 'pending',
         species: species.name,
         speciesId: selectedPokemon,
         nickname: nickname || undefined,
