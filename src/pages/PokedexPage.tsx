@@ -105,7 +105,7 @@ export default function PokedexPage() {
           return;
         }
 
-        await insertCapture.mutateAsync({
+        const insertedCapture = await insertCapture.mutateAsync({
           id: pokemon.id,
           run_id: activeRunId,
           player_id: pokemon.playerId,
@@ -118,59 +118,60 @@ export default function PokedexPage() {
           origin_id: dbRouteId,
           status: 'dead',
         });
-        dbCapture = {
-          id: pokemon.id,
-          run_id: activeRunId,
-          player_id: pokemon.playerId,
-          route_id: dbRouteId,
-          species: pokemon.species,
-          species_id: pokemon.speciesId,
-          nickname: pokemon.nickname || null,
-          image_url: pokemon.imageUrl,
-          origin_type: 'route',
-          origin_id: dbRouteId,
-          status: 'dead',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
+        dbCapture = insertedCapture as CaptureRow;
       } else {
         await updateStatus.mutateAsync({ id: pokemon.id, status: 'dead' });
       }
 
       updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
 
-      // Find linked Soul Link captures
-      const originType = dbCapture.origin_type;
-      const originId = dbCapture.origin_id;
-
-      const { data: linked, error: linkError } = await supabase
+      const { data: routeLinkedCaptures, error: linkError } = await supabase
         .from('captures')
         .select('*')
-        .eq('origin_type', originType)
-        .eq('origin_id', originId)
+        .eq('run_id', activeRunId)
+        .eq('route_id', dbCapture.route_id)
         .neq('player_id', pokemon.playerId);
 
       if (linkError) {
-        console.warn('Error fetching linked captures:', linkError);
+        throw linkError;
       }
 
-      const linkedList = linked || [];
+      const linkedList = routeLinkedCaptures || [];
+      const linkedIdsToUpdate = linkedList
+        .filter(capture => capture.status !== 'dead')
+        .map(capture => capture.id);
 
-      // Auto-kill all linked Soul Link captures
-      for (const lc of linkedList) {
-        if (lc.status !== 'dead') {
-          await supabase
-            .from('captures')
-            .update({ status: 'dead' })
-            .eq('id', lc.id);
-          const localPoke = run.pokemon.find(p => p.id === lc.id);
-          if (localPoke) {
-            updatePokemon(activeRunId, lc.id, { status: 'dead' as PokemonStatus });
-          }
+      let updatedLinkedCaptures: CaptureRow[] = [];
+      if (linkedIdsToUpdate.length > 0) {
+        const { data: updatedRows, error: updateLinkedError } = await supabase
+          .from('captures')
+          .update({ status: 'dead' })
+          .eq('run_id', activeRunId)
+          .eq('route_id', dbCapture.route_id)
+          .neq('player_id', pokemon.playerId)
+          .neq('status', 'dead')
+          .select('*');
+
+        if (updateLinkedError) {
+          throw updateLinkedError;
         }
+
+        updatedLinkedCaptures = (updatedRows || []) as CaptureRow[];
       }
 
-      queryClient.invalidateQueries({ queryKey: ['captures', activeRunId] });
+      console.log('[handleMarkDead] linked route captures', {
+        runId: activeRunId,
+        routeId: dbCapture.route_id,
+        found: linkedList.length,
+        updated: updatedLinkedCaptures.length,
+      });
+
+      linkedList.forEach((linkedCapture) => {
+        updatePokemon(activeRunId, linkedCapture.id, { status: 'dead' as PokemonStatus });
+      });
+
+      await queryClient.invalidateQueries({ queryKey: ['captures', activeRunId] });
+      await queryClient.refetchQueries({ queryKey: ['captures', activeRunId], exact: true });
 
       setLinkedCaptures(linkedList.map(lc => ({ ...lc, status: 'dead' })));
       setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
