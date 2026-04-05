@@ -7,6 +7,7 @@ import { usePokemonSpecies } from '@/hooks/usePokemonSpecies';
 import { Player, CaptureResult } from '@/types/pokemon';
 import { PlayerBadge } from './PlayerBadge';
 import { Check, X, RotateCcw, Skull, Link2, Users } from 'lucide-react';
+import { upsertCaptureRecord } from '@/lib/capturePersistence';
 
 interface CaptureDialogProps {
   open: boolean;
@@ -69,11 +70,31 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
     setStep('player');
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!activeRunId || !selectedPlayer || !selectedPokemon) return;
     const species = allSpecies.find(p => p.id === selectedPokemon);
     if (!species) return;
-    addCapture(activeRunId, routeId, selectedPlayer, selectedPokemon, species.name, nickname || undefined, result);
+    const createdPokemonId = addCapture(activeRunId, routeId, selectedPlayer, selectedPokemon, species.name, nickname || undefined, result);
+
+    const route = run?.routes.find(r => r.id === routeId);
+    const createdPokemon = getActiveRun()?.pokemon.find(p => p.id === createdPokemonId);
+
+    if (route && createdPokemon) {
+      const persistedStatus = result === 'captured' ? 'captured' : result === 'ko' ? 'dead' : 'seen';
+      await upsertCaptureRecord({
+        id: createdPokemon.id,
+        runId: activeRunId,
+        playerId: selectedPlayer,
+        routeName: route.name,
+        routeStatus: route.status,
+        species: species.name,
+        speciesId: selectedPokemon,
+        nickname: nickname || undefined,
+        imageUrl: createdPokemon.imageUrl,
+        status: persistedStatus,
+      });
+    }
+
     reset();
     onOpenChange(false);
   };

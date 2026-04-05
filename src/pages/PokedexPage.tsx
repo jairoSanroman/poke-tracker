@@ -13,6 +13,7 @@ import { getPokemonArtwork, getPokemonSprite, GENERATIONS, getGeneration } from 
 import { useRunCaptures, useUpdateCaptureStatus, useInsertCapture, CaptureRow } from '@/hooks/useCaptures';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { upsertCaptureRecord } from '@/lib/capturePersistence';
 
 export default function PokedexPage() {
   const { getActiveRun, activeRunId, updatePokemon } = useGameStore();
@@ -89,15 +90,7 @@ export default function PokedexPage() {
       let dbCapture = dbCaptures.find(c => c.id === pokemon.id);
       if (!dbCapture) {
         const route = run.routes.find(r => r.id === pokemon.routeId);
-        const { data: dbRoutes } = await supabase
-          .from('routes')
-          .select('id')
-          .eq('run_id', activeRunId)
-          .eq('name', route?.name || pokemon.routeId)
-          .limit(1);
-        
-        const dbRouteId = dbRoutes?.[0]?.id;
-        if (!dbRouteId) {
+        if (!route) {
           updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
           setSelectedPokemon({ ...pokemon, status: 'dead' as PokemonStatus });
           setLinkedCaptures([]);
@@ -105,17 +98,16 @@ export default function PokedexPage() {
           return;
         }
 
-        const insertedCapture = await insertCapture.mutateAsync({
+        const insertedCapture = await upsertCaptureRecord({
           id: pokemon.id,
-          run_id: activeRunId,
-          player_id: pokemon.playerId,
-          route_id: dbRouteId,
+          runId: activeRunId,
+          playerId: pokemon.playerId,
+          routeName: route.name,
+          routeStatus: route.status,
           species: pokemon.species,
-          species_id: pokemon.speciesId,
-          nickname: pokemon.nickname || '',
-          image_url: pokemon.imageUrl,
-          origin_type: 'route',
-          origin_id: dbRouteId,
+          speciesId: pokemon.speciesId,
+          nickname: pokemon.nickname,
+          imageUrl: pokemon.imageUrl,
           status: 'dead',
         });
         dbCapture = insertedCapture as CaptureRow;
@@ -124,6 +116,13 @@ export default function PokedexPage() {
       }
 
       updatePokemon(activeRunId, pokemon.id, { status: 'dead' as PokemonStatus });
+
+      console.log('[handleMarkDead] source pokemon route', {
+        pokemonId: pokemon.id,
+        runId: activeRunId,
+        routeId: dbCapture.route_id,
+        playerId: pokemon.playerId,
+      });
 
       const { data: routeLinkedCaptures, error: linkError } = await supabase
         .from('captures')
@@ -137,6 +136,7 @@ export default function PokedexPage() {
       }
 
       const linkedList = routeLinkedCaptures || [];
+      console.log('[handleMarkDead] linked search results', linkedList);
       const linkedIdsToUpdate = linkedList
         .filter(capture => capture.status !== 'dead')
         .map(capture => capture.id);
