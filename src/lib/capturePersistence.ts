@@ -1,6 +1,24 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { CaptureRow } from '@/hooks/useCaptures';
 
+async function ensureRunRecord(runId: string, runName?: string) {
+  const { data: existing } = await supabase
+    .from('runs')
+    .select('id')
+    .eq('id', runId)
+    .maybeSingle();
+
+  if (existing?.id) return;
+
+  const { error } = await supabase
+    .from('runs')
+    .insert({ id: runId, name: runName || 'Partida', lives: 10, max_lives: 10 });
+
+  if (error && error.code !== '23505') {
+    console.warn('[ensureRunRecord] insert error (non-fatal):', error);
+  }
+}
+
 interface EnsureRouteRecordParams {
   runId: string;
   routeName: string;
@@ -20,7 +38,9 @@ interface UpsertCaptureRecordParams {
   status: string;
 }
 
-export async function ensureRouteRecord({ runId, routeName, routeStatus = 'completed' }: EnsureRouteRecordParams) {
+export async function ensureRouteRecord({ runId, routeName, routeStatus = 'pending' }: EnsureRouteRecordParams & { runName?: string }) {
+  await ensureRunRecord(runId);
+
   const { data: existingRoute, error: selectError } = await supabase
     .from('routes')
     .select('id')
@@ -32,17 +52,30 @@ export async function ensureRouteRecord({ runId, routeName, routeStatus = 'compl
   if (selectError) throw selectError;
   if (existingRoute?.id) return existingRoute.id;
 
+  const validStatus = ['pending', 'done', 'no-encounter'].includes(routeStatus) ? routeStatus : 'pending';
+
   const { data: insertedRoute, error: insertError } = await supabase
     .from('routes')
     .insert({
       run_id: runId,
       name: routeName,
-      status: routeStatus,
+      status: validStatus,
     })
     .select('id')
     .single();
 
-  if (insertError) throw insertError;
+  if (insertError) {
+    // If conflict (duplicate), try fetching again
+    const { data: retry } = await supabase
+      .from('routes')
+      .select('id')
+      .eq('run_id', runId)
+      .eq('name', routeName)
+      .limit(1)
+      .maybeSingle();
+    if (retry?.id) return retry.id;
+    throw insertError;
+  }
 
   return insertedRoute.id;
 }

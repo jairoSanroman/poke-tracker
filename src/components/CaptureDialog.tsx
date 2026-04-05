@@ -80,13 +80,13 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
     const createdPokemon = getActiveRun()?.pokemon.find(p => p.id === createdPokemonId);
 
     if (route && createdPokemon) {
-      const persistedStatus = result === 'captured' ? 'captured' : result === 'ko' ? 'dead' : 'seen';
+      const persistedStatus = result === 'captured' ? 'caught' : result === 'ko' ? 'dead' : result === 'failed' ? 'failed' : 'seen';
       await upsertCaptureRecord({
         id: createdPokemon.id,
         runId: activeRunId,
         playerId: selectedPlayer,
         routeName: route.name,
-        routeStatus: route.status,
+        routeStatus: 'pending',
         species: species.name,
         speciesId: selectedPokemon,
         nickname: nickname || undefined,
