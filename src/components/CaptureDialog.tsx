@@ -74,10 +74,10 @@ export function CaptureDialog({ open, onOpenChange, routeId, routeName, players 
     if (!activeRunId || !selectedPlayer || !selectedPokemon) return;
     const species = allSpecies.find(p => p.id === selectedPokemon);
     if (!species) return;
-    addCapture(activeRunId, routeId, selectedPlayer, selectedPokemon, species.name, nickname || undefined, result);
+    const createdPokemonId = addCapture(activeRunId, routeId, selectedPlayer, selectedPokemon, species.name, nickname || undefined, result);
 
     const route = run?.routes.find(r => r.id === routeId);
-    const createdPokemon = getActiveRun()?.pokemon.at(-1);
+    const createdPokemon = getActiveRun()?.pokemon.find(p => p.id === createdPokemonId);
 
     if (route && createdPokemon) {
       const persistedStatus = result === 'captured' ? 'captured' : result === 'ko' ? 'dead' : 'seen';
