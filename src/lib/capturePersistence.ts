@@ -20,7 +20,7 @@ interface UpsertCaptureRecordParams {
   status: string;
 }
 
-export async function ensureRouteRecord({ runId, routeName, routeStatus = 'completed' }: EnsureRouteRecordParams) {
+export async function ensureRouteRecord({ runId, routeName, routeStatus = 'pending' }: EnsureRouteRecordParams) {
   const { data: existingRoute, error: selectError } = await supabase
     .from('routes')
     .select('id')
@@ -32,17 +32,30 @@ export async function ensureRouteRecord({ runId, routeName, routeStatus = 'compl
   if (selectError) throw selectError;
   if (existingRoute?.id) return existingRoute.id;
 
+  const validStatus = ['pending', 'done', 'no-encounter'].includes(routeStatus) ? routeStatus : 'pending';
+
   const { data: insertedRoute, error: insertError } = await supabase
     .from('routes')
     .insert({
       run_id: runId,
       name: routeName,
-      status: routeStatus,
+      status: validStatus,
     })
     .select('id')
     .single();
 
-  if (insertError) throw insertError;
+  if (insertError) {
+    // If conflict (duplicate), try fetching again
+    const { data: retry } = await supabase
+      .from('routes')
+      .select('id')
+      .eq('run_id', runId)
+      .eq('name', routeName)
+      .limit(1)
+      .maybeSingle();
+    if (retry?.id) return retry.id;
+    throw insertError;
+  }
 
   return insertedRoute.id;
 }
