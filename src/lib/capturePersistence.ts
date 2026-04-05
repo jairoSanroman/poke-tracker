@@ -1,6 +1,24 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { CaptureRow } from '@/hooks/useCaptures';
 
+async function ensureRunRecord(runId: string, runName?: string) {
+  const { data: existing } = await supabase
+    .from('runs')
+    .select('id')
+    .eq('id', runId)
+    .maybeSingle();
+
+  if (existing?.id) return;
+
+  const { error } = await supabase
+    .from('runs')
+    .insert({ id: runId, name: runName || 'Partida', lives: 10, max_lives: 10 });
+
+  if (error && error.code !== '23505') {
+    console.warn('[ensureRunRecord] insert error (non-fatal):', error);
+  }
+}
+
 interface EnsureRouteRecordParams {
   runId: string;
   routeName: string;
@@ -20,7 +38,9 @@ interface UpsertCaptureRecordParams {
   status: string;
 }
 
-export async function ensureRouteRecord({ runId, routeName, routeStatus = 'pending' }: EnsureRouteRecordParams) {
+export async function ensureRouteRecord({ runId, routeName, routeStatus = 'pending' }: EnsureRouteRecordParams & { runName?: string }) {
+  await ensureRunRecord(runId);
+
   const { data: existingRoute, error: selectError } = await supabase
     .from('routes')
     .select('id')
