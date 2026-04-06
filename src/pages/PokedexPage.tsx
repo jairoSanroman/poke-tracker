@@ -98,10 +98,13 @@ export default function PokedexPage() {
           return;
         }
 
+        const player = run.players.find(p => p.id === pokemon.playerId);
         const insertedCapture = await upsertCaptureRecord({
           id: pokemon.id,
           runId: activeRunId,
           playerId: pokemon.playerId,
+          playerInitials: player?.initials,
+          playerColor: player?.color,
           routeName: route.name,
           routeStatus: route.status,
           species: pokemon.species,
