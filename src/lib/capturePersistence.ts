@@ -112,6 +112,10 @@ export async function upsertCaptureRecord({
   imageUrl,
   status,
 }: UpsertCaptureRecordParams): Promise<CaptureRow> {
+  // Ensure player exists in DB before inserting capture
+  if (playerInitials && playerColor) {
+    await ensurePlayerRecord(playerId, playerInitials, playerColor);
+  }
   const routeId = await ensureRouteRecord({ runId, routeName, routeStatus });
 
   const { data, error } = await supabase
