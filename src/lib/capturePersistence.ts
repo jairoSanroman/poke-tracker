@@ -19,6 +19,24 @@ async function ensureRunRecord(runId: string, runName?: string) {
   }
 }
 
+export async function ensurePlayerRecord(playerId: string, initials: string, color: string) {
+  const { data: existing } = await supabase
+    .from('players')
+    .select('id')
+    .eq('id', playerId)
+    .maybeSingle();
+
+  if (existing?.id) return;
+
+  const { error } = await supabase
+    .from('players')
+    .insert({ id: playerId, initials, color });
+
+  if (error && error.code !== '23505') {
+    console.warn('[ensurePlayerRecord] insert error (non-fatal):', error);
+  }
+}
+
 interface EnsureRouteRecordParams {
   runId: string;
   routeName: string;
