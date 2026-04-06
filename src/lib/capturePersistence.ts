@@ -104,6 +104,8 @@ export async function upsertCaptureRecord({
   id,
   runId,
   playerId,
+  playerInitials,
+  playerColor,
   routeName,
   routeStatus,
   species,
