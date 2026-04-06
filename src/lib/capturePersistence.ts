@@ -47,6 +47,8 @@ interface UpsertCaptureRecordParams {
   id: string;
   runId: string;
   playerId: string;
+  playerInitials?: string;
+  playerColor?: string;
   routeName: string;
   routeStatus?: string;
   species: string;
