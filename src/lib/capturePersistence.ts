@@ -19,6 +19,24 @@ async function ensureRunRecord(runId: string, runName?: string) {
   }
 }
 
+export async function ensurePlayerRecord(playerId: string, initials: string, color: string) {
+  const { data: existing } = await supabase
+    .from('players')
+    .select('id')
+    .eq('id', playerId)
+    .maybeSingle();
+
+  if (existing?.id) return;
+
+  const { error } = await supabase
+    .from('players')
+    .insert({ id: playerId, initials, color });
+
+  if (error && error.code !== '23505') {
+    console.warn('[ensurePlayerRecord] insert error (non-fatal):', error);
+  }
+}
+
 interface EnsureRouteRecordParams {
   runId: string;
   routeName: string;
@@ -29,6 +47,8 @@ interface UpsertCaptureRecordParams {
   id: string;
   runId: string;
   playerId: string;
+  playerInitials?: string;
+  playerColor?: string;
   routeName: string;
   routeStatus?: string;
   species: string;
@@ -84,6 +104,8 @@ export async function upsertCaptureRecord({
   id,
   runId,
   playerId,
+  playerInitials,
+  playerColor,
   routeName,
   routeStatus,
   species,
@@ -92,6 +114,10 @@ export async function upsertCaptureRecord({
   imageUrl,
   status,
 }: UpsertCaptureRecordParams): Promise<CaptureRow> {
+  // Ensure player exists in DB before inserting capture
+  if (playerInitials && playerColor) {
+    await ensurePlayerRecord(playerId, playerInitials, playerColor);
+  }
   const routeId = await ensureRouteRecord({ runId, routeName, routeStatus });
 
   const { data, error } = await supabase

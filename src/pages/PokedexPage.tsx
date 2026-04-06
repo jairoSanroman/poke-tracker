@@ -98,10 +98,13 @@ export default function PokedexPage() {
           return;
         }
 
+        const player = run.players.find(p => p.id === pokemon.playerId);
         const insertedCapture = await upsertCaptureRecord({
           id: pokemon.id,
           runId: activeRunId,
           playerId: pokemon.playerId,
+          playerInitials: player?.initials,
+          playerColor: player?.color,
           routeName: route.name,
           routeStatus: route.status,
           species: pokemon.species,
@@ -369,7 +372,8 @@ export default function PokedexPage() {
 
                     {!isDead && (
                       <button
-                        onClick={() => handleMarkDead(selectedPokemon)}
+                        type="button"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); console.log('[UI] Marcar como muerto clicked'); handleMarkDead(selectedPokemon); }}
                         disabled={loadingDeath}
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-md border-2 border-destructive/30 bg-destructive/10 text-destructive font-bold text-sm hover:bg-destructive/20 transition-all duration-150 active:translate-y-0.5 font-body"
                       >
