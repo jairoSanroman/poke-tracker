@@ -87,6 +87,7 @@ export default function PokedexPage() {
     const isSoulLink = (run.runType || 'soul_link') === 'soul_link';
     setLoadingDeath(true);
 
+    try {
       let dbCapture = dbCaptures.find(c => c.id === pokemon.id);
       if (!dbCapture) {
         const route = run.routes.find(r => r.id === pokemon.routeId);
