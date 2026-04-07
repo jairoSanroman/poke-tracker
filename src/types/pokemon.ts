@@ -38,6 +38,7 @@ export interface GameRoute {
 }
 
 export interface Run {
+  id: string;
   runType: RunType;
   name: string;
   players: Player[];
