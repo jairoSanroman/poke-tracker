@@ -451,7 +451,6 @@ export default function PokedexPage() {
                       ? 'En modo Randomlocke solo muere tu Pokémon.'
                       : 'Este Pokémon no tiene Pokémon vinculados de otros jugadores.'}
                   </p>
-                  </p>
                 )}
               </div>
 
