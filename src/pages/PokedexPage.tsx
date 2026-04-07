@@ -422,7 +422,7 @@ export default function PokedexPage() {
                 {linkedCaptures.length > 0 ? (
                   <>
                     <p className="text-xs text-muted-foreground mb-3 text-center font-body">
-                      Este Pokémon estaba vinculado con los siguientes Pokémon del otro jugador:
+                      Por el Soul Link, los siguientes Pokémon vinculados también han muerto:
                     </p>
                     <div className="space-y-2">
                       {linkedCaptures.map(cap => {
@@ -447,7 +447,10 @@ export default function PokedexPage() {
                   </>
                 ) : (
                   <p className="text-sm text-muted-foreground text-center py-4 font-body">
-                    Este Pokémon no tiene Pokémon vinculados de otros jugadores.
+                    {(run.runType || 'soul_link') === 'randomlocke'
+                      ? 'En modo Randomlocke solo muere tu Pokémon.'
+                      : 'Este Pokémon no tiene Pokémon vinculados de otros jugadores.'}
+                  </p>
                   </p>
                 )}
               </div>
