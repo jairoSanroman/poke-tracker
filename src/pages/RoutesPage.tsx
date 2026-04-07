@@ -70,6 +70,7 @@ export default function RoutesPage() {
               players={run.players}
               pokemon={run.pokemon}
               onAddCapture={() => setCaptureRoute({ id: route.id, name: route.name })}
+              runType={run.runType || 'soul_link'}
             />
           ))}
         </div>
