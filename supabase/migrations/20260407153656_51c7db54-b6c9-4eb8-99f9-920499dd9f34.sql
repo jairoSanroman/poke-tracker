@@ -1,0 +1,1 @@
+ALTER TABLE public.runs ADD COLUMN run_type text NOT NULL DEFAULT 'soul_link';

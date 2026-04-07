@@ -1,4 +1,4 @@
-import { GameRoute, Player, Pokemon } from '@/types/pokemon';
+import { GameRoute, Player, Pokemon, RunType } from '@/types/pokemon';
 import { PlayerBadge } from './PlayerBadge';
 import { MapPin, Plus, Link2, Skull } from 'lucide-react';
 
@@ -7,6 +7,7 @@ interface RouteCardProps {
   players: Player[];
   pokemon: Pokemon[];
   onAddCapture: () => void;
+  runType?: RunType;
 }
 
 const resultLabels: Record<string, { label: string; className: string }> = {
@@ -23,7 +24,7 @@ const routeStatusLabels: Record<string, { label: string; className: string }> = 
   blocked: { label: 'Bloqueada', className: 'status-ko' },
 };
 
-export function RouteCard({ route, players, pokemon, onAddCapture }: RouteCardProps) {
+export function RouteCard({ route, players, pokemon, onAddCapture, runType = 'soul_link' }: RouteCardProps) {
   const statusInfo = routeStatusLabels[route.status] || routeStatusLabels.pending;
 
   return (
@@ -49,8 +50,8 @@ export function RouteCard({ route, players, pokemon, onAddCapture }: RouteCardPr
       </div>
 
       {route.captures.length > 0 ? (
-        <div className={`rounded-lg overflow-hidden ${route.captures.length > 1 ? 'border-2 border-primary/20 bg-primary/[0.03]' : ''}`}>
-          {route.captures.length > 1 && (
+        <div className={`rounded-lg overflow-hidden ${route.captures.length > 1 && runType === 'soul_link' ? 'border-2 border-primary/20 bg-primary/[0.03]' : ''}`}>
+          {route.captures.length > 1 && runType === 'soul_link' && (
             <div className="flex items-center gap-1 px-3 pt-2 pb-1">
               <Link2 className="w-3 h-3 text-primary/60" />
               <span className="text-[9px] font-bold text-primary/60 uppercase tracking-wider font-body">Grupo vinculado</span>

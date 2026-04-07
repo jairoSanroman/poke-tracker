@@ -180,6 +180,7 @@ export type Database = {
           lives: number
           max_lives: number
           name: string
+          run_type: string
         }
         Insert: {
           created_at?: string
@@ -187,6 +188,7 @@ export type Database = {
           lives?: number
           max_lives?: number
           name: string
+          run_type?: string
         }
         Update: {
           created_at?: string
@@ -194,6 +196,7 @@ export type Database = {
           lives?: number
           max_lives?: number
           name?: string
+          run_type?: string
         }
         Relationships: []
       }

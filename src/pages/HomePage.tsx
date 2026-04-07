@@ -1,20 +1,23 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
-import { Plus, Play, Trash2 } from 'lucide-react';
+import { Plus, Play, Trash2, Link2, Shuffle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RunType } from '@/types/pokemon';
 
 export default function HomePage() {
   const { runs, createRun, deleteRun, setActiveRun } = useGameStore();
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
+  const [runType, setRunType] = useState<RunType>('soul_link');
 
   const handleCreate = () => {
     if (!newName.trim()) return;
-    const id = createRun(newName.trim());
+    const id = createRun(newName.trim(), runType);
     setNewName('');
+    setRunType('soul_link');
     setShowCreate(false);
     setActiveRun(id);
     navigate('/dashboard');
@@ -23,6 +26,26 @@ export default function HomePage() {
   const handleSelect = (id: string) => {
     setActiveRun(id);
     navigate('/dashboard');
+  };
+
+  const runTypeOptions = [
+    {
+      value: 'soul_link' as RunType,
+      icon: Link2,
+      label: 'Soul Link',
+      desc: 'Las capturas se vinculan entre jugadores por ruta. Si un Pokémon muere, su compañero vinculado también.',
+    },
+    {
+      value: 'randomlocke' as RunType,
+      icon: Shuffle,
+      label: 'Randomlocke',
+      desc: 'Pokémon aleatorios sin vinculación. Cada muerte solo afecta al jugador dueño.',
+    },
+  ];
+
+  const runTypeBadge = (type: RunType) => {
+    if (type === 'randomlocke') return { label: 'Randomlocke', className: 'bg-accent/20 text-accent-foreground border-accent/30' };
+    return { label: 'Soul Link', className: 'bg-primary/20 text-primary border-primary/30' };
   };
 
   return (
@@ -55,7 +78,6 @@ export default function HomePage() {
 
         {runs.length === 0 ? (
           <div className="text-center py-16">
-            {/* Pokéball SVG empty state */}
             <div className="mx-auto w-24 h-24 mb-4 relative">
               <svg viewBox="0 0 100 100" className="w-full h-full opacity-30">
                 <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="3"/>
@@ -71,45 +93,51 @@ export default function HomePage() {
         ) : (
           <div className="space-y-3">
             <h2 className="font-heading text-[8px] text-muted-foreground uppercase leading-relaxed">Partidas</h2>
-            {runs.map(run => (
-              <div key={run.id} className="glass-card p-4 animate-slide-up border-2 border-border pokemon-hover">
-                <div className="flex items-center justify-between">
-                  <button
-                    onClick={() => handleSelect(run.id)}
-                    className="flex-1 text-left flex items-center gap-3"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-                      <Play className="w-4 h-4 text-primary ml-0.5" />
-                    </div>
-                    <div>
-                      <p className="font-heading text-[8px] leading-relaxed">{run.name}</p>
-                      <p className="text-xs text-muted-foreground font-body">
-                        {run.players.length} jugador{run.players.length !== 1 ? 'es' : ''} · ❤️ {run.lives}
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => deleteRun(run.id)}
-                    className="touch-target w-8 h-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors duration-150 flex items-center justify-center"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-                {run.players.length > 0 && (
-                  <div className="flex gap-1.5 mt-3 flex-wrap">
-                    {run.players.map(p => (
-                      <span
-                        key={p.id}
-                        className="px-2 py-0.5 rounded-md text-[10px] font-bold text-primary-foreground font-body border border-black/10"
-                        style={{ backgroundColor: p.color }}
-                      >
-                        {p.initials}
-                      </span>
-                    ))}
+            {runs.map(run => {
+              const badge = runTypeBadge(run.runType || 'soul_link');
+              return (
+                <div key={run.id} className="glass-card p-4 animate-slide-up border-2 border-border pokemon-hover">
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => handleSelect(run.id)}
+                      className="flex-1 text-left flex items-center gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                        <Play className="w-4 h-4 text-primary ml-0.5" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-heading text-[8px] leading-relaxed">{run.name}</p>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border font-body ${badge.className}`}>{badge.label}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground font-body">
+                          {run.players.length} jugador{run.players.length !== 1 ? 'es' : ''} · ❤️ {run.lives}
+                        </p>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => deleteRun(run.id)}
+                      className="touch-target w-8 h-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors duration-150 flex items-center justify-center"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-              </div>
-            ))}
+                  {run.players.length > 0 && (
+                    <div className="flex gap-1.5 mt-3 flex-wrap">
+                      {run.players.map(p => (
+                        <span
+                          key={p.id}
+                          className="px-2 py-0.5 rounded-md text-[10px] font-bold text-primary-foreground font-body border border-black/10"
+                          style={{ backgroundColor: p.color }}
+                        >
+                          {p.initials}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -127,6 +155,29 @@ export default function HomePage() {
               className="rounded-md border-2 font-body"
               autoFocus
             />
+
+            <div>
+              <p className="text-xs font-bold text-muted-foreground mb-2 font-body">Tipo de Nuzlocke</p>
+              <div className="grid grid-cols-2 gap-2">
+                {runTypeOptions.map(opt => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setRunType(opt.value)}
+                    className={`p-3 rounded-lg border-2 text-left transition-all duration-150 ${
+                      runType === opt.value
+                        ? 'border-accent bg-accent/10 ring-2 ring-accent/30'
+                        : 'border-border bg-muted/30 hover:border-muted-foreground/30'
+                    }`}
+                  >
+                    <opt.icon className={`w-5 h-5 mb-1.5 ${runType === opt.value ? 'text-accent-foreground' : 'text-muted-foreground'}`} />
+                    <p className="font-heading text-[8px] leading-relaxed">{opt.label}</p>
+                    <p className="text-[10px] text-muted-foreground font-body mt-0.5 leading-tight">{opt.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
               type="submit"
               disabled={!newName.trim()}

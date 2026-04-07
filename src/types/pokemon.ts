@@ -1,6 +1,7 @@
 export type PokemonStatus = 'seen' | 'captured' | 'ko' | 'in_team' | 'boxed' | 'dead';
 export type RouteStatus = 'pending' | 'completed' | 'no_encounter' | 'blocked';
 export type CaptureResult = 'captured' | 'failed' | 'repeated' | 'ko';
+export type RunType = 'soul_link' | 'randomlocke';
 
 export interface Player {
   id: string;
@@ -38,6 +39,7 @@ export interface GameRoute {
 
 export interface Run {
   id: string;
+  runType: RunType;
   name: string;
   players: Player[];
   lives: number;

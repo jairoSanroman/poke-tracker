@@ -3,7 +3,7 @@ import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
 import { LivesCounter } from '@/components/LivesCounter';
 import { PlayerBadge } from '@/components/PlayerBadge';
-import { Map, BookOpen, Users, ChevronRight } from 'lucide-react';
+import { Map, BookOpen, Users, ChevronRight, Link2, Shuffle } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function DashboardPage() {
@@ -21,6 +21,10 @@ export default function DashboardPage() {
   const totalCaptures = run.pokemon.filter(p => p.status === 'captured' || p.status === 'in_team' || p.status === 'boxed').length;
   const teamPokemon = run.pokemon.filter(p => p.status === 'in_team');
 
+  const runTypeInfo = (run.runType || 'soul_link') === 'randomlocke'
+    ? { label: 'Randomlocke', icon: Shuffle, className: 'bg-accent/20 text-accent-foreground border-accent/30' }
+    : { label: 'Soul Link', icon: Link2, className: 'bg-primary/20 text-primary border-primary/30' };
+
   const quickLinks = [
     { to: '/routes', icon: Map, label: 'Rutas', desc: `${completedRoutes}/${run.routes.length} completadas`, color: 'bg-primary/10 text-primary border-primary/20' },
     { to: '/pokedex', icon: BookOpen, label: 'Pokédex', desc: `${totalCaptures} capturados`, color: 'bg-destructive/10 text-destructive border-destructive/20' },
@@ -30,6 +34,13 @@ export default function DashboardPage() {
   return (
     <GameLayout title={run.name} gradient>
       <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-md border font-body ${runTypeInfo.className}`}>
+            <runTypeInfo.icon className="w-3.5 h-3.5" />
+            {runTypeInfo.label}
+          </span>
+        </div>
+
         <LivesCounter />
 
         {run.players.length > 0 && (

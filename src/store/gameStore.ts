@@ -8,7 +8,7 @@ interface GameState {
   activeRunId: string | null;
 
   // Run actions
-  createRun: (name: string) => string;
+  createRun: (name: string, runType?: 'soul_link' | 'randomlocke') => string;
   deleteRun: (id: string) => void;
   setActiveRun: (id: string | null) => void;
   getActiveRun: () => Run | undefined;
@@ -36,7 +36,7 @@ export const useGameStore = create<GameState>()(
       runs: [],
       activeRunId: null,
 
-      createRun: (name: string) => {
+      createRun: (name: string, runType: 'soul_link' | 'randomlocke' = 'soul_link') => {
         const id = crypto.randomUUID();
         const routes: GameRoute[] = KANTO_ROUTES.map(r => ({
           id: r.id,
@@ -46,6 +46,7 @@ export const useGameStore = create<GameState>()(
         }));
         const run: Run = {
           id,
+          runType,
           name,
           players: [],
           lives: 10,
