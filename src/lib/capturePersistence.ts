@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { CaptureRow } from '@/hooks/useCaptures';
 
-async function ensureRunRecord(runId: string, runName?: string, runType?: string) {
+async function ensureRunRecord(runId: string, runName?: string, runType?: string, region?: string) {
   const { data: existing } = await supabase
     .from('runs')
     .select('id')
@@ -12,7 +12,7 @@ async function ensureRunRecord(runId: string, runName?: string, runType?: string
 
   const { error } = await supabase
     .from('runs')
-    .insert({ id: runId, name: runName || 'Partida', lives: 10, max_lives: 10, run_type: runType || 'soul_link' } as any);
+    .insert({ id: runId, name: runName || 'Partida', lives: 10, max_lives: 10, run_type: runType || 'soul_link', region: region || 'kanto' } as any);
 
   if (error && error.code !== '23505') {
     console.warn('[ensureRunRecord] insert error (non-fatal):', error);

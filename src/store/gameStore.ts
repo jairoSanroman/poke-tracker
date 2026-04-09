@@ -1,14 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Run, Player, Pokemon, GameRoute, CaptureResult, PokemonStatus } from '@/types/pokemon';
-import { KANTO_ROUTES, PLAYER_COLORS } from '@/data/pokemon';
+import { Run, Player, Pokemon, GameRoute, CaptureResult, PokemonStatus, RegionId } from '@/types/pokemon';
+import { PLAYER_COLORS } from '@/data/pokemon';
+import { getRoutesForRegion } from '@/data/regions';
 
 interface GameState {
   runs: Run[];
   activeRunId: string | null;
 
   // Run actions
-  createRun: (name: string, runType?: 'soul_link' | 'randomlocke') => string;
+  createRun: (name: string, runType?: 'soul_link' | 'randomlocke', region?: RegionId) => string;
   deleteRun: (id: string) => void;
   setActiveRun: (id: string | null) => void;
   getActiveRun: () => Run | undefined;
@@ -36,9 +37,10 @@ export const useGameStore = create<GameState>()(
       runs: [],
       activeRunId: null,
 
-      createRun: (name: string, runType: 'soul_link' | 'randomlocke' = 'soul_link') => {
+      createRun: (name: string, runType: 'soul_link' | 'randomlocke' = 'soul_link', region: RegionId = 'kanto') => {
         const id = crypto.randomUUID();
-        const routes: GameRoute[] = KANTO_ROUTES.map(r => ({
+        const regionRoutes = getRoutesForRegion(region);
+        const routes: GameRoute[] = regionRoutes.map(r => ({
           id: r.id,
           name: r.name,
           status: 'pending' as const,
@@ -47,6 +49,7 @@ export const useGameStore = create<GameState>()(
         const run: Run = {
           id,
           runType,
+          region,
           name,
           players: [],
           lives: 10,
