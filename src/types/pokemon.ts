@@ -2,6 +2,7 @@ export type PokemonStatus = 'seen' | 'captured' | 'ko' | 'in_team' | 'boxed' | '
 export type RouteStatus = 'pending' | 'completed' | 'no_encounter' | 'blocked';
 export type CaptureResult = 'captured' | 'failed' | 'repeated' | 'ko';
 export type RunType = 'soul_link' | 'randomlocke';
+export type RegionId = 'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'teselia' | 'kalos' | 'alola' | 'galar';
 
 export interface Player {
   id: string;
@@ -40,6 +41,7 @@ export interface GameRoute {
 export interface Run {
   id: string;
   runType: RunType;
+  region: RegionId;
   name: string;
   players: Player[];
   lives: number;
