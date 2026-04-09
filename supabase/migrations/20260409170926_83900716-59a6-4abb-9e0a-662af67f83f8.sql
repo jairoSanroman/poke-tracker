@@ -1,0 +1,1 @@
+ALTER TABLE public.runs ADD COLUMN region text NOT NULL DEFAULT 'kanto';
