@@ -6,6 +6,15 @@ import { PlayerBadge } from '@/components/PlayerBadge';
 import { Map, BookOpen, Users, ChevronRight, Link2, Shuffle } from 'lucide-react';
 import { useEffect } from 'react';
 import { REGIONS } from '@/data/regions';
+import { Progress } from '@/components/ui/progress';
+
+function getRivalryBadge(deaths: number): string {
+  if (deaths === 0) return '🏆 Imbatible';
+  if (deaths <= 2) return '😬 Con suerte…';
+  if (deaths <= 4) return '💀 Descuidado';
+  if (deaths <= 7) return '☠️ Desastre ambulante';
+  return '🪦 Leyenda del caos';
+}
 
 export default function DashboardPage() {
   const { getActiveRun, activeRunId } = useGameStore();
@@ -25,6 +34,16 @@ export default function DashboardPage() {
   const runTypeInfo = (run.runType || 'soul_link') === 'randomlocke'
     ? { label: 'Randomlocke', icon: Shuffle, className: 'bg-accent/20 text-accent-foreground border-accent/30' }
     : { label: 'Soul Link', icon: Link2, className: 'bg-primary/20 text-primary border-primary/30' };
+
+  // Rivalry data
+  const playerDeaths = run.players.map(p => ({
+    player: p,
+    deaths: run.pokemon.filter(pk => pk.playerId === p.id && (pk.status === 'dead' || pk.status === 'ko')).length,
+  })).sort((a, b) => b.deaths - a.deaths);
+
+  const maxDeaths = Math.max(...playerDeaths.map(p => p.deaths), 1);
+  const minDeaths = Math.min(...playerDeaths.map(p => p.deaths));
+  const isTied = playerDeaths.length >= 2 && playerDeaths[0].deaths === playerDeaths[playerDeaths.length - 1].deaths;
 
   const quickLinks = [
     { to: '/routes', icon: Map, label: 'Rutas', desc: `${completedRoutes}/${run.routes.length} completadas`, color: 'bg-primary/10 text-primary border-primary/20' },
@@ -95,6 +114,56 @@ export default function DashboardPage() {
                       onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                     />
                     <span className="text-[9px] font-bold text-center font-body">{poke.nickname || poke.species}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Rivalidad Section */}
+        {run.players.length >= 2 && (
+          <div>
+            <h2 className="font-heading text-[8px] text-muted-foreground uppercase leading-relaxed mb-3">⚔️ Rivalidad</h2>
+            <div className="glass-card border-2 border-border p-4 space-y-3">
+              {isTied && (
+                <div className="text-center">
+                  <span className="inline-block text-xs font-bold font-body px-3 py-1 rounded-full bg-accent/20 border border-accent/30 text-accent-foreground">
+                    ⚔️ Empate técnico
+                  </span>
+                </div>
+              )}
+              {playerDeaths.map((pd, idx) => {
+                const isWorst = !isTied && idx === 0 && pd.deaths > 0;
+                const isBest = !isTied && pd.deaths === minDeaths;
+                return (
+                  <div key={pd.player.id} className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <PlayerBadge player={pd.player} size="sm" />
+                        <span className="text-xs font-bold font-body">{pd.player.initials}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-body text-muted-foreground">{pd.deaths} 💀</span>
+                        {isWorst && (
+                          <span className="text-[9px] font-bold font-body px-2 py-0.5 rounded-full bg-destructive/15 border border-destructive/25 text-destructive">
+                            {getRivalryBadge(pd.deaths)}
+                          </span>
+                        )}
+                        {isBest && (
+                          <span className="text-[9px] font-bold font-body px-2 py-0.5 rounded-full bg-primary/15 border border-primary/25 text-primary">
+                            😎 Va ganando
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <Progress
+                      value={maxDeaths > 0 ? (pd.deaths / maxDeaths) * 100 : 0}
+                      className="h-2.5 rounded-full"
+                      style={{
+                        '--progress-color': pd.player.color,
+                      } as React.CSSProperties}
+                    />
                   </div>
                 );
               })}
