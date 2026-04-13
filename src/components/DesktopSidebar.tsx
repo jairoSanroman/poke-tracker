@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Map, BookOpen, Settings, LogOut } from 'lucide-react';
+import { Home, Map, MapPin, BookOpen, Settings, LogOut } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { to: '/dashboard', icon: Home, label: 'Dashboard' },
   { to: '/routes', icon: Map, label: 'Rutas' },
+  { to: '/map', icon: MapPin, label: 'Mapa' },
   { to: '/pokedex', icon: BookOpen, label: 'Pokédex' },
   { to: '/settings', icon: Settings, label: 'Ajustes' },
 ];
