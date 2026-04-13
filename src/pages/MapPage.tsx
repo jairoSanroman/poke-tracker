@@ -45,11 +45,12 @@ export default function MapPage() {
 
   if (!run) return null;
 
-  const regionInfo = REGIONS.find(r => r.id === run.region);
-  const regionName = regionInfo?.name ?? run.region;
+  const safeRegion = run.region || 'kanto';
+  const regionInfo = REGIONS.find(r => r.id === safeRegion);
+  const regionName = regionInfo?.name ?? safeRegion;
   const regionEmoji = regionInfo?.emoji ?? '🗺️';
   const regionGames = regionInfo?.games ?? '';
-  const starterSprite = regionStarters[run.region] ?? 25;
+  const starterSprite = regionStarters[safeRegion] ?? 25;
 
   // Group routes into rows of 3 for zigzag layout
   const rows: typeof run.routes[] = [];
