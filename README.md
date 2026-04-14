@@ -29,8 +29,11 @@
 
 <br/>
 
-### 🎮 [JUGAR AHORA](https://indigo-run-log.lovable.app)
-*→ indigo-run-log.lovable.app*
+[![JUGAR AHORA](https://img.shields.io/badge/⚔️%20JUGAR%20AHORA%20⚔️-CC0000?style=for-the-badge&labelColor=1A3A6B&color=CC0000)](https://indigo-run-log.lovable.app)
+
+<br/>
+
+[![INDIGO RUN LOG](https://img.shields.io/badge/🌐%20indigo--run--log.lovable.app-FFD700?style=flat-square&labelColor=1A3A6B)](https://indigo-run-log.lovable.app)
 
 <br/>
 
