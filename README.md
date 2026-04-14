@@ -29,12 +29,8 @@
 
 <br/>
 
-
-[![Jugar ahora](https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png)](https://indigo-run-log.lovable.app)
-
 ### 🎮 [JUGAR AHORA](https://indigo-run-log.lovable.app)
 *→ indigo-run-log.lovable.app*
-
 
 <br/>
 
