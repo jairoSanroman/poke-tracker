@@ -29,7 +29,7 @@
 
 <br/>
 
-[![JUGAR AHORA](https://img.shields.io/badge/---%20⚔️%20%20J%20U%20G%20A%20R%20%20A%20H%20O%20R%20A%20%20⚔️%20---CC0000?style=for-the-badge&labelColor=1A3A6B&logoWidth=40)](https://indigo-run-log.lovable.app)
+[![](https://img.shields.io/badge/⚔️%20JUGAR-CC0000?style=for-the-badge)](https://indigo-run-log.lovable.app)[![](https://img.shields.io/badge/AHORA%20⚔️-1A3A6B?style=for-the-badge)](https://indigo-run-log.lovable.app)
 
 <br/>
 
