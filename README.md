@@ -29,9 +29,12 @@
 
 <br/>
 
-[![JUGAR AHORA](https://img.shields.io/badge/🎮%20JUGAR%20AHORA-CC0000?style=for-the-badge&logoColor=white)](https://indigo-run-log.lovable.app)
 
+[![Jugar ahora](https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png)](https://indigo-run-log.lovable.app)
+
+### 🎮 [JUGAR AHORA](https://indigo-run-log.lovable.app)
 *→ indigo-run-log.lovable.app*
+
 
 <br/>
 
