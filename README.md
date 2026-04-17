@@ -1,14 +1,8 @@
 <div align="center">
-```
-╔══════════════════════════════════════════════════════╗
-║                                                      ║
-║   ⚔️  P O K É M O N   A Ñ I L   T R A C K E R  ⚔️   ║
-║                                                      ║
-╚══════════════════════════════════════════════════════╝
-```
+⚔️ **P O K É M O N &nbsp; A Ñ I L &nbsp; T R A C K E R** ⚔️
  
 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="60px"/>
-### *"Cada ruta es una decisión. Cada muerte, permanente. Cada victoria, legendaria."*
+*"Cada ruta es una decisión. Cada muerte, permanente. Cada victoria, legendaria."*
  
 ⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
  
@@ -24,34 +18,31 @@
 [![Versión](https://img.shields.io/badge/⭐_Versión-2.0.0-FFD700?style=flat-square)]()
  
 <br/>
-## 🎮 [➤ JUGAR AHORA](https://indigo-run-log.lovable.app)
+### 🎮 [➤ JUGAR AHORA](https://indigo-run-log.lovable.app)
  
 *→ indigo-run-log.lovable.app*
  
 <br/>
 ⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
  
+</div>
 ## 📖 ¿Qué es Pokémon Añil Tracker?
  
-```
-╔═══════════════════════════════════════════════════════════════╗
-║  Tracker colaborativo en TIEMPO REAL para grupos de amigos   ║
-║  que juegan runs de Nuzlocke y Soul Link juntos.             ║
-║                                                              ║
-║  Registra capturas ruta por ruta, vincula Pokémon entre      ║
-║  compañeros, cambia de región, gestiona múltiples partidas   ║
-║  y descubre quién es el verdadero desastre ambulante. 💀     ║
-╚═══════════════════════════════════════════════════════════════╝
-```
+<div align="center">
+Tracker colaborativo en **TIEMPO REAL** para grupos de amigos que juegan runs de Nuzlocke y Soul Link juntos.
+ 
+Registra capturas ruta por ruta, vincula Pokémon entre compañeros, cambia de región, gestiona múltiples partidas y descubre quién es el verdadero desastre ambulante. 💀
  
 Soporta **8 regiones** completas con rutas reales, dos modos de juego (**Soul Link** y **Randomlocke**), un sistema de **rivalidad** entre jugadores y sincronización instantánea entre dispositivos.
  
+</div>
 ```
   🎮 Jugador 1            💀 Ruta 3            🎮 Jugador 2
     Charizard    ══════ Soul Link ══════    Blastoise
        ❌ muere                               ❌ también muere
 ```
  
+<div align="center">
 ⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
  
 ## 📕 Pokédex de Funcionalidades
@@ -93,9 +84,9 @@ Soporta **8 regiones** completas con rutas reales, dos modos de juego (**Soul Li
  
 ⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
  
+</div>
 ## ⚔️ Modos de juego
  
-</div>
 <table>
 <tr>
 <td width="50%" align="center">
@@ -106,11 +97,6 @@ Si tu Pokémon muere, **el vinculado también cae**.
  
 Un destino compartido. Sin piedad.
  
-```
-  Pikachu ═══ Eevee
-     💀          💀
-```
- 
 </td>
 <td width="50%" align="center">
 ### 🎲 Randomlocke
@@ -119,12 +105,6 @@ Todas las especies son aleatorias.
 Cada ruta es una sorpresa.
  
 ¿Qué te tocará? Solo el destino lo sabe.
- 
-```
-  Ruta 1 → ???
-  Ruta 2 → ???
-  Ruta 3 → ???
-```
  
 </td>
 </tr>
@@ -164,7 +144,6 @@ npm install
  
 # 4️⃣  Crea tu archivo de variables de entorno
 cp .env.example .env
-# Edita .env con tus credenciales de Supabase
  
 # 5️⃣  Inicia el servidor de desarrollo
 npm run dev
@@ -172,25 +151,15 @@ npm run dev
  
 La app estará disponible en `http://localhost:5173` 🎉
  
-<div align="center">
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-</div>
 ## 🔐 Variables de entorno
- 
-Crea un archivo `.env` en la raíz del proyecto con:
  
 ```env
 VITE_SUPABASE_URL=tu_url_de_supabase
 VITE_SUPABASE_ANON_KEY=tu_anon_key
 ```
  
-> ⚠️ **¡NUNCA subas el archivo `.env` a GitHub!** Ya está incluido en `.gitignore`. Trátalo como tratarías a tu último Pokémon con vida en un Nuzlocke: con extremo cuidado.
+> ⚠️ **¡NUNCA subas el archivo `.env` a GitHub!** Trátalo como tu último Pokémon con vida en un Nuzlocke: con extremo cuidado.
  
-<div align="center">
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-</div>
 ## 📁 Estructura del proyecto
  
 ```
@@ -222,32 +191,24 @@ poke-tracker/
 <div align="center">
 ⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
  
-```
-╔══════════════════════════════════════════════════╗
-║                                                  ║
-║          🏆  H A L L   O F   F A M E  🏆        ║
-║                                                  ║
-║    Los iniciales que empezaron esta aventura:    ║
-║                                                  ║
-╚══════════════════════════════════════════════════╝
-```
+🏆 **H A L L &nbsp; O F &nbsp; F A M E** 🏆
  
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" width="64px" alt="Bulbasaur"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" width="64px" alt="Charmander"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" width="64px" alt="Squirtle"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" width="64px" alt="Pikachu"/>
-⬇️ Sus evoluciones, forjadas en batalla ⬇️
+*Los iniciales que empezaron esta aventura:*
  
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" width="80px" alt="Venusaur"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" width="80px" alt="Charizard"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" width="80px" alt="Blastoise"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" width="80px" alt="Raichu"/>
-<br/><br/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" width="64px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" width="64px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" width="64px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" width="64px"/>
+⬇️ *Sus evoluciones, forjadas en batalla* ⬇️
  
-### 🪦 *"No importa cuántos caigan en el camino — lo que importa es que los que quedan lleguen al Alto Mando."*
- 
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" width="80px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" width="80px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" width="80px"/>
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" width="80px"/>
 <br/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" width="96px" alt="Mewtwo"/>
+### 🪦 *"No importa cuántos caigan — lo que importa es llegar al Alto Mando."*
+ 
+<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" width="96px"/>
 *"El verdadero Nuzlocke no es sobrevivir. Es recordar a los que no lo hicieron."*
  
 <br/>
