@@ -1,221 +1,139 @@
-<div align="center">
-⚔️ **P O K É M O N &nbsp; A Ñ I L &nbsp; T R A C K E R** ⚔️
- 
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" width="60px"/>
-*"Cada ruta es una decisión. Cada muerte, permanente. Cada victoria, legendaria."*
- 
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-[![React](https://img.shields.io/badge/React_18-1A3A6B?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-CC0000?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-FFD700?style=for-the-badge&logo=vite&logoColor=black)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-1A3A6B?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-CC0000?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Zustand](https://img.shields.io/badge/Zustand-FFD700?style=for-the-badge&logo=npm&logoColor=black)](https://github.com/pmndrs/zustand)
- 
-[![Estado](https://img.shields.io/badge/🎮_Estado-En_Desarrollo-CC0000?style=flat-square)]()
-[![Licencia](https://img.shields.io/badge/📜_Licencia-MIT-1A3A6B?style=flat-square)]()
-[![Versión](https://img.shields.io/badge/⭐_Versión-2.0.0-FFD700?style=flat-square)]()
- 
-<br/>
-### 🎮 [➤ JUGAR AHORA](https://indigo-run-log.lovable.app)
- 
-*→ indigo-run-log.lovable.app*
- 
-<br/>
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-</div>
-## 📖 ¿Qué es Pokémon Añil Tracker?
- 
-<div align="center">
-Tracker colaborativo en **TIEMPO REAL** para grupos de amigos que juegan runs de Nuzlocke y Soul Link juntos.
- 
-Registra capturas ruta por ruta, vincula Pokémon entre compañeros, cambia de región, gestiona múltiples partidas y descubre quién es el verdadero desastre ambulante. 💀
- 
-Soporta **8 regiones** completas con rutas reales, dos modos de juego (**Soul Link** y **Randomlocke**), un sistema de **rivalidad** entre jugadores y sincronización instantánea entre dispositivos.
- 
-</div>
+<h1 align="center">🎮 Pokémon Añil Tracker</h1>
+
+<p align="center">
+  ⚔️ <strong>Cada ruta es una decisión. Cada muerte, permanente.</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-blue">
+  <img src="https://img.shields.io/badge/TypeScript-blue">
+  <img src="https://img.shields.io/badge/Vite-purple">
+  <img src="https://img.shields.io/badge/TailwindCSS-38B2AC">
+  <img src="https://img.shields.io/badge/Zustand-yellow">
+</p>
+
+---
+
+## 🚀 Demo
+
+<p align="center">
+  <a href="https://indigo-run-log.lovable.app">
+    <img src="https://img.shields.io/badge/▶️%20JUGAR%20AHORA-black?style=for-the-badge">
+  </a>
+</p>
+
+---
+
+## 📸 Preview
+
+<p align="center">
+  <img src="https://via.placeholder.com/800x400?text=Preview+App" alt="preview">
+</p>
+
+> ⚠️ Sustituye esta imagen por capturas reales de tu app
+
+---
+
+## 🧠 ¿Qué es esto?
+
+**Pokémon Añil Tracker** es una aplicación colaborativa en tiempo real diseñada para grupos que juegan:
+
+* 🧩 Nuzlocke
+* 🔗 Soul Link
+
+Permite llevar un control completo de la partida:
+
+* Registrar capturas por ruta
+* Vincular Pokémon entre jugadores
+* Gestionar múltiples runs
+* Sincronización en tiempo real
+
+---
+
+## ✨ Features
+
+* 🗺️ 8 regiones completas (Kanto → Galar)
+* 🔄 Rutas automáticas
+* 🔗 Sistema **Soul Link**
+* 🎲 Modo **Randomlocke**
+* 📚 Pokédex con filtros
+* 🏆 Rivalidad entre jugadores
+* ⚡ Sincronización en tiempo real
+
+---
+
+## ⚔️ Ejemplo Soul Link
+
+```text
+Jugador 1: Ruta 3 → Pikachu
+Jugador 2: Ruta 3 → Charmander
+
+Si Pikachu muere ❌
+Charmander también muere ❌
 ```
-  🎮 Jugador 1            💀 Ruta 3            🎮 Jugador 2
-    Charizard    ══════ Soul Link ══════    Blastoise
-       ❌ muere                               ❌ también muere
-```
- 
-<div align="center">
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-## 📕 Pokédex de Funcionalidades
- 
-| Nº | Funcionalidad | Estado |
-|:---:|:---|:---:|
-| #001 | 🗺️ **Selección de región** — Kanto, Johto, Hoenn, Sinnoh, Teselia, Kalos, Alola, Galar | ✅ Obtenido |
-| #002 | 📍 **Rutas automáticas** — Se generan las rutas reales de cada región al crear partida | ✅ Obtenido |
-| #003 | 🔗 **Soul Link** — Vinculación de Pokémon entre jugadores con muerte en cadena | ✅ Obtenido |
-| #004 | 🎲 **Randomlocke** — Modo de run con Pokémon aleatorios | ✅ Obtenido |
-| #005 | 📕 **Pokédex** — Catálogo de capturas con filtros por estado y generación | ✅ Obtenido |
-| #006 | ⚔️ **Rivalidad** — Ranking de muertes con badges de humor entre jugadores | ✅ Obtenido |
-| #007 | 🎮 **Gestión de partidas** — Crear, borrar y cambiar entre múltiples runs | ✅ Obtenido |
-| #008 | 📡 **Tiempo real** — Sincronización instantánea con Supabase Realtime | ✅ Obtenido |
-| #009 | 💀 **Muerte en cadena** — Si tu Pokémon cae en Soul Link, el vinculado también | ✅ Obtenido |
-| #010 | 👥 **Multijugador** — Varios jugadores por partida con colores y avatares | ✅ Obtenido |
-| #011 | 📜 **Log de eventos** — Historial de capturas y muertes de la run | ✅ Obtenido |
-| #012 | ❤️ **Sistema de vidas** — Contador compartido de vidas restantes | ✅ Obtenido |
-| #013 | 🗺️ Mapa de progreso interactivo por región | 🔜 Por descubrir |
-| #014 | 📊 Estadísticas detalladas de la run | 🔜 Por descubrir |
-| #015 | 🪦 Cementerio de caídos | 🔜 Por descubrir |
-| #016 | 🏆 Exportar resumen de la run | 🔜 Por descubrir |
-| #017 | 🔒 Modo espectador (solo lectura) | 🔜 Por descubrir |
- 
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-## 🌍 Regiones disponibles
- 
-| Región | Generación | Juegos | Rutas |
-|:---:|:---:|:---|:---:|
-| 🌿 **Kanto** | Gen I | Rojo / Azul / Amarillo | 25 |
-| 🌸 **Johto** | Gen II | Oro / Plata / Cristal | 40 |
-| 🌊 **Hoenn** | Gen III | Rubí / Zafiro / Esmeralda | 24 |
-| ❄️ **Sinnoh** | Gen IV | Diamante / Perla / Platino | 30 |
-| ⚡ **Teselia** | Gen V | Negro / Blanco | 30 |
-| 🦋 **Kalos** | Gen VI | X / Y | 22 |
-| 🌺 **Alola** | Gen VII | Sol / Luna | 17 |
-| 🐺 **Galar** | Gen VIII | Espada / Escudo | 20 |
- 
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-</div>
-## ⚔️ Modos de juego
- 
-<table>
-<tr>
-<td width="50%" align="center">
-### 🔗 Soul Link
- 
-Cada captura se vincula con la de tu compañero.
-Si tu Pokémon muere, **el vinculado también cae**.
- 
-Un destino compartido. Sin piedad.
- 
-</td>
-<td width="50%" align="center">
-### 🎲 Randomlocke
- 
-Todas las especies son aleatorias.
-Cada ruta es una sorpresa.
- 
-¿Qué te tocará? Solo el destino lo sabe.
- 
-</td>
-</tr>
-</table>
-<div align="center">
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-## 🛠️ Stack tecnológico
- 
-| Tecnología | Uso |
-|:---:|:---|
-| ⚛️ **React 18 + TypeScript** | Interfaz de usuario |
-| ⚡ **Vite 5** | Bundler y servidor de desarrollo |
-| 🎨 **Tailwind CSS + shadcn/ui** | Estilos y componentes |
-| 🗄️ **Supabase** | Base de datos, auth y tiempo real |
-| 🔁 **Supabase Realtime** | Sincronización entre jugadores |
-| 🐻 **Zustand** | Estado global del cliente |
-| 🔀 **React Router** | Navegación SPA |
-| 📦 **TanStack Query** | Caché y fetching de datos |
- 
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-</div>
-## 🚀 Ejecutar en local
- 
-> Requisito: tener **Node.js** y **npm** instalados → [instalar con nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
- 
+
+---
+
+## 🛠️ Tech Stack
+
+| Tecnología   | Uso      |
+| ------------ | -------- |
+| React 18     | Frontend |
+| TypeScript   | Tipado   |
+| Vite         | Build    |
+| Tailwind CSS | Estilos  |
+| Zustand      | Estado   |
+
+---
+
+## 📦 Instalación
+
 ```bash
-# 1️⃣  Clona el repositorio
-git clone https://github.com/jairoSanroman/poke-tracker.git
- 
-# 2️⃣  Entra en el directorio
+git clone https://github.com/jairoSanroman/poke-tracker
 cd poke-tracker
- 
-# 3️⃣  Instala las dependencias
 npm install
- 
-# 4️⃣  Crea tu archivo de variables de entorno
-cp .env.example .env
- 
-# 5️⃣  Inicia el servidor de desarrollo
 npm run dev
 ```
- 
-La app estará disponible en `http://localhost:5173` 🎉
- 
-## 🔐 Variables de entorno
- 
-```env
-VITE_SUPABASE_URL=tu_url_de_supabase
-VITE_SUPABASE_ANON_KEY=tu_anon_key
-```
- 
-> ⚠️ **¡NUNCA subas el archivo `.env` a GitHub!** Trátalo como tu último Pokémon con vida en un Nuzlocke: con extremo cuidado.
- 
-## 📁 Estructura del proyecto
- 
-```
-poke-tracker/
-│
-├── 📂 src/
-│   ├── 📂 components/        # Componentes reutilizables
-│   ├── 📂 pages/             # Vistas principales
-│   ├── 📂 hooks/             # Custom hooks
-│   ├── 📂 store/             # Estado global con Zustand
-│   ├── 📂 lib/               # Utilidades y persistencia
-│   ├── 📂 data/              # Datos estáticos (regiones, rutas)
-│   ├── 📂 types/             # Tipos TypeScript
-│   └── 📂 integrations/      # Cliente de Supabase
-│
-├── 📂 supabase/
-│   └── 📂 migrations/        # Migraciones de base de datos
-│
-└── 📂 public/                # Assets estáticos
-```
- 
-## 🤝 ¿Cómo contribuir?
- 
-1. Haz un **fork** del repositorio
-2. Crea una rama → `git checkout -b feature/mi-mejora`
-3. Haz commit → `git commit -m '✨ Añade mi mejora'`
-4. Sube la rama → `git push origin feature/mi-mejora`
-5. Abre un **Pull Request**
-<div align="center">
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-🏆 **H A L L &nbsp; O F &nbsp; F A M E** 🏆
- 
-*Los iniciales que empezaron esta aventura:*
- 
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" width="64px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" width="64px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" width="64px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" width="64px"/>
-⬇️ *Sus evoluciones, forjadas en batalla* ⬇️
- 
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" width="80px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" width="80px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" width="80px"/>
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" width="80px"/>
-<br/>
-### 🪦 *"No importa cuántos caigan — lo que importa es llegar al Alto Mando."*
- 
-<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" width="96px"/>
-*"El verdadero Nuzlocke no es sobrevivir. Es recordar a los que no lo hicieron."*
- 
-<br/>
-⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴⚪🔴
- 
-*Hecho con ❤️ y mucho miedo a los golpes críticos*
- 
-</div>
+
+---
+
+## 📊 Estado del proyecto
+
+* 🟢 Activo
+* 🚧 En desarrollo continuo
+
+---
+
+## 🧩 Roadmap
+
+* [ ] Sistema de login
+* [ ] Guardado en la nube
+* [ ] Chat entre jugadores
+* [ ] Exportar runs
+
+---
+
+## 🤝 Contribuir
+
+1. Haz fork del repositorio
+2. Crea una rama (`feature/nueva-feature`)
+3. Haz commit
+4. Abre un Pull Request
+
+---
+
+## 📜 Licencia
+
+MIT
+
+---
+
+## ⭐ Apóyalo
+
+Si te gusta el proyecto:
+
+👉 Dale una estrella al repo
+👉 Compártelo con amigos
+
 
 </div>
