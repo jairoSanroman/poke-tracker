@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Map, MapPin, BookOpen, Settings, LogOut } from 'lucide-react';
+import { Home, Map, MapPin, BookOpen, Settings, LogOut, Skull } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/routes', icon: Map, label: 'Rutas' },
   { to: '/map', icon: MapPin, label: 'Mapa' },
   { to: '/pokedex', icon: BookOpen, label: 'Pokédex' },
+  { to: '/cemetery', icon: Skull, label: 'Cementerio' },
   { to: '/settings', icon: Settings, label: 'Ajustes' },
 ];
 
