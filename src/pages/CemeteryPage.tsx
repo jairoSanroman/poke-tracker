@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
 import { getPokemonArtwork } from '@/data/pokemon';
-import { Skull, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Skull, Sparkles, Search } from 'lucide-react';
 
 export default function CemeteryPage() {
   const { getActiveRun, activeRunId } = useGameStore();
   const navigate = useNavigate();
   const run = getActiveRun();
   const [playerFilter, setPlayerFilter] = useState<string>('all');
+  const [search, setSearch] = useState<string>('');
+
 
   useEffect(() => {
     if (!activeRunId) navigate('/');
