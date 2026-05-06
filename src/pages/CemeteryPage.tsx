@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
 import { getPokemonArtwork } from '@/data/pokemon';
-import { Skull, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Skull, Sparkles, Search } from 'lucide-react';
 
 export default function CemeteryPage() {
   const { getActiveRun, activeRunId } = useGameStore();
   const navigate = useNavigate();
   const run = getActiveRun();
   const [playerFilter, setPlayerFilter] = useState<string>('all');
+  const [search, setSearch] = useState<string>('');
+
 
   useEffect(() => {
     if (!activeRunId) navigate('/');
@@ -22,9 +25,15 @@ export default function CemeteryPage() {
     .slice()
     .reverse();
 
-  const fallen = playerFilter === 'all'
-    ? allFallen
-    : allFallen.filter(p => p.playerId === playerFilter);
+  const query = search.trim().toLowerCase();
+  const fallen = allFallen
+    .filter(p => playerFilter === 'all' || p.playerId === playerFilter)
+    .filter(p => {
+      if (!query) return true;
+      const name = p.nickname?.toLowerCase() || '';
+      const species = p.species?.toLowerCase() || '';
+      return name.includes(query) || species.includes(query);
+    });
 
   const playerById = Object.fromEntries(run.players.map(p => [p.id, p]));
   const routeById = Object.fromEntries(run.routes.map(r => [r.id, r]));
@@ -88,6 +97,18 @@ export default function CemeteryPage() {
               })}
             </div>
           )}
+
+          {/* Search */}
+          <div className="relative max-w-sm mx-auto">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Input
+              type="text"
+              placeholder="Buscar por especie o mote..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="pl-9 bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-slate-500 text-xs h-9"
+            />
+          </div>
 
           {fallen.length === 0 ? (
             <div className="text-center py-16 space-y-4">
