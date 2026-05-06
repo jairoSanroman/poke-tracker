@@ -25,9 +25,15 @@ export default function CemeteryPage() {
     .slice()
     .reverse();
 
-  const fallen = playerFilter === 'all'
-    ? allFallen
-    : allFallen.filter(p => p.playerId === playerFilter);
+  const query = search.trim().toLowerCase();
+  const fallen = allFallen
+    .filter(p => playerFilter === 'all' || p.playerId === playerFilter)
+    .filter(p => {
+      if (!query) return true;
+      const name = p.nickname?.toLowerCase() || '';
+      const species = p.species?.toLowerCase() || '';
+      return name.includes(query) || species.includes(query);
+    });
 
   const playerById = Object.fromEntries(run.players.map(p => [p.id, p]));
   const routeById = Object.fromEntries(run.routes.map(r => [r.id, r]));
