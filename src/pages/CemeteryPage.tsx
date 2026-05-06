@@ -98,6 +98,18 @@ export default function CemeteryPage() {
             </div>
           )}
 
+          {/* Search */}
+          <div className="relative max-w-sm mx-auto">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Input
+              type="text"
+              placeholder="Buscar por especie o mote..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="pl-9 bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-slate-500 text-xs h-9"
+            />
+          </div>
+
           {fallen.length === 0 ? (
             <div className="text-center py-16 space-y-4">
               <div className="flex justify-center">
