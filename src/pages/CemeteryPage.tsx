@@ -4,7 +4,7 @@ import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
 import { getPokemonArtwork } from '@/data/pokemon';
 import { Input } from '@/components/ui/input';
-import { Skull, Sparkles, Search } from 'lucide-react';
+import { Skull, Sparkles, Search, X } from 'lucide-react';
 
 export default function CemeteryPage() {
   const { getActiveRun, activeRunId } = useGameStore();
@@ -106,8 +106,18 @@ export default function CemeteryPage() {
               placeholder="Buscar por especie o mote..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-9 bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-slate-500 text-xs h-9"
+              className="pl-9 pr-9 bg-slate-900/60 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-slate-500 text-xs h-9"
             />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                aria-label="Limpiar búsqueda"
+                title="Limpiar búsqueda"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full text-slate-400 hover:text-slate-100 hover:bg-slate-700/60 transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {fallen.length === 0 ? (
