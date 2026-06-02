@@ -23,7 +23,7 @@ export function GameLayout({ children, title, headerRight, gradient = false }: G
           </header>
         )}
         <main className="flex-1 pb-24 lg:pb-8 overflow-y-auto dot-texture">
-          <div className="max-w-3xl mx-auto lg:mx-0 px-4 py-4 lg:px-6">
+          <div className="max-w-3xl mx-auto lg:max-w-none lg:mx-0 px-4 py-4 lg:px-6">
             {children}
           </div>
         </main>
