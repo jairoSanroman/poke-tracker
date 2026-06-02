@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Map, MapPin, BookOpen, Settings, Skull } from 'lucide-react';
+import { Home, Map, BookOpen, Settings, Skull } from 'lucide-react';
 
 const navItems = [
   { to: '/dashboard', icon: Home, label: 'Dashboard' },

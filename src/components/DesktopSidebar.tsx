@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Map, MapPin, BookOpen, Settings, LogOut, Skull } from 'lucide-react';
+import { Home, Map, BookOpen, Settings, LogOut, Skull } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 
