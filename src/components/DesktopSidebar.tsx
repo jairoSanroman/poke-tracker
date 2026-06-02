@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const navItems = [
   { to: '/dashboard', icon: Home, label: 'Dashboard' },
   { to: '/routes', icon: Map, label: 'Rutas' },
-  { to: '/map', icon: MapPin, label: 'Mapa' },
   { to: '/pokedex', icon: BookOpen, label: 'Pokédex' },
   { to: '/cemetery', icon: Skull, label: 'Cementerio' },
   { to: '/settings', icon: Settings, label: 'Ajustes' },
