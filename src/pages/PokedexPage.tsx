@@ -204,7 +204,7 @@ export default function PokedexPage() {
           <Input placeholder="Buscar por nombre o mote..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 rounded-md border-2 font-body" />
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 scrollbar-hide">
           {statuses.map(s => (
             <button
               key={s.value}
@@ -218,7 +218,7 @@ export default function PokedexPage() {
           ))}
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 scrollbar-hide">
           <button
             onClick={() => setGenFilter(null)}
             className={`px-2.5 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all border font-body ${genFilter === null ? 'bg-accent text-accent-foreground border-accent' : 'bg-muted text-muted-foreground border-border'}`}
