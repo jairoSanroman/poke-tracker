@@ -99,7 +99,7 @@ export default function CemeteryPage() {
 
   return (
     <GameLayout title="⚰️ Cementerio">
-      <div className="min-h-[60vh] -mx-4 px-4 py-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-xl border-2 border-slate-800 relative overflow-hidden">
+      <div className="min-h-[60vh] -mx-3 px-3 py-6 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-xl border-2 border-slate-800 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_top,_rgba(148,163,184,0.3),_transparent_60%)]" />
 
         <div className="relative space-y-6">
@@ -208,7 +208,7 @@ export default function CemeteryPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {entries.map(entry => {
                 const player = playerById[entry.playerId];
                 const route = routeById[entry.routeId];

@@ -101,7 +101,7 @@ export default function DashboardPage() {
         {teamPokemon.length > 0 && (
           <div>
             <h2 className="font-heading text-[8px] text-muted-foreground uppercase leading-relaxed mb-3">Equipo actual</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
               {teamPokemon.slice(0, 6).map(poke => {
                 const player = run.players.find(p => p.id === poke.playerId);
                 return (
