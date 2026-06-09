@@ -236,7 +236,7 @@ export default function PokedexPage() {
               {g.name}
             </button>
           ))}
-        </div>
+        </PageContainer>
 
         {run.players.length > 1 && (
           <div className="flex gap-2">
