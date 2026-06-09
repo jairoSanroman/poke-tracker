@@ -156,7 +156,7 @@ export default function HomePage() {
             })}
           </div>
         )}
-      </div>
+      </PageContainer>
 
       <Dialog open={showCreate} onOpenChange={(open) => { if (!open) resetCreate(); setShowCreate(open); }}>
         <DialogContent className="rounded-xl glass-card-elevated max-w-md border-2 border-accent/30">
