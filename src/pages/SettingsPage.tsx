@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { LogOut, Moon, Sun, Info, RefreshCw, Trash2, Plus, Play, Link2, Shuffle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useGameStore } from '@/store/gameStore';
@@ -111,7 +112,8 @@ export default function SettingsPage() {
 
   return (
     <GameLayout title="Ajustes">
-      <div className="space-y-3">
+      <PageContainer>
+        <div className="space-y-3">
         <button onClick={() => setShowSwitchRun(true)} className="w-full glass-card p-4 flex items-center gap-3 pokemon-hover transition-all duration-150 active:scale-[0.98] border-2 border-border">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20"><RefreshCw className="w-5 h-5 text-primary" /></div>
           <div className="flex-1 text-left">
@@ -281,6 +283,7 @@ export default function SettingsPage() {
           )}
         </DialogContent>
       </Dialog>
+      </PageContainer>
     </GameLayout>
   );
 }

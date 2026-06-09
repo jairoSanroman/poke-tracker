@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { LivesCounter } from '@/components/LivesCounter';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Map, BookOpen, Users, ChevronRight, Link2, Shuffle } from 'lucide-react';
@@ -53,7 +54,8 @@ export default function DashboardPage() {
 
   return (
     <GameLayout title={run.name} gradient>
-      <div className="space-y-4">
+      <PageContainer>
+        <div className="space-y-4">
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-md border font-body ${runTypeInfo.className}`}>
             <runTypeInfo.icon className="w-3.5 h-3.5" />
@@ -170,7 +172,8 @@ export default function DashboardPage() {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      </PageContainer>
     </GameLayout>
   );
 }

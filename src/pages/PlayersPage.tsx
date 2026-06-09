@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -60,7 +61,8 @@ export default function PlayersPage() {
 
   return (
     <GameLayout title="Jugadores">
-      <div className="space-y-4">
+      <PageContainer>
+        <div className="space-y-4">
         <button
           onClick={() => { setAvatarPreview(getRandomAvatar()); setShowAdd(true); }}
           className="w-full glass-card p-4 flex items-center gap-3 pokemon-hover active:scale-[0.98] border-2 border-accent/30"
@@ -225,6 +227,7 @@ export default function PlayersPage() {
           )}
         </DialogContent>
       </Dialog>
+      </PageContainer>
     </GameLayout>
   );
 }

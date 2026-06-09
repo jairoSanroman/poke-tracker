@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { getPokemonArtwork } from '@/data/pokemon';
 import { Input } from '@/components/ui/input';
 import { Skull, Sparkles, Search, X } from 'lucide-react';
@@ -99,7 +100,7 @@ export default function CemeteryPage() {
 
   return (
     <GameLayout title="⚰️ Cementerio">
-      <div className="min-h-[60vh] -mx-3 px-3 py-6 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-xl border-2 border-slate-800 relative overflow-hidden">
+      <PageContainer variant="fullBleed" className="min-h-[60vh] py-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-xl border-2 border-slate-800 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_top,_rgba(148,163,184,0.3),_transparent_60%)]" />
 
         <div className="relative space-y-6">
@@ -291,7 +292,7 @@ export default function CemeteryPage() {
             </div>
           )}
         </div>
-      </div>
+      </PageContainer>
     </GameLayout>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
+import { PageContainer } from '@/components/PageContainer';
 import { Plus, Play, Trash2, Link2, Shuffle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -75,7 +76,7 @@ export default function HomePage() {
         <p className="font-heading text-[8px] text-accent">Tracker</p>
       </div>
 
-      <div className="flex-1 w-full px-3 sm:px-4 lg:px-6 -mt-4">
+      <PageContainer className="flex-1 w-full -mt-4 !py-0">
         <button
           onClick={() => { resetCreate(); setShowCreate(true); }}
           className="w-full glass-card-elevated p-4 flex items-center gap-3 mb-6 pokemon-hover active:scale-[0.98] border-2 border-accent/30"
@@ -155,7 +156,7 @@ export default function HomePage() {
             })}
           </div>
         )}
-      </div>
+      </PageContainer>
 
       <Dialog open={showCreate} onOpenChange={(open) => { if (!open) resetCreate(); setShowCreate(open); }}>
         <DialogContent className="rounded-xl glass-card-elevated max-w-md border-2 border-accent/30">

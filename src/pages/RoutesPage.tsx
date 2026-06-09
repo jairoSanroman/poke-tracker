@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { RouteCard } from '@/components/RouteCard';
 import { CaptureDialog } from '@/components/CaptureDialog';
 import { Input } from '@/components/ui/input';
@@ -35,7 +36,8 @@ export default function RoutesPage() {
 
   return (
     <GameLayout title="Rutas">
-      <div className="space-y-4">
+      <PageContainer>
+        <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -89,6 +91,7 @@ export default function RoutesPage() {
           players={run.players}
         />
       )}
+      </PageContainer>
     </GameLayout>
   );
 }

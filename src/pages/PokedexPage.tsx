@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { PokemonCard } from '@/components/PokemonCard';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Input } from '@/components/ui/input';
@@ -198,13 +199,14 @@ export default function PokedexPage() {
         <span className="font-body text-xs text-primary-foreground/60">{mergedPokemon.length} registrados</span>
       }
     >
-      <div className="space-y-4">
+      <PageContainer>
+        <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input placeholder="Buscar por nombre o mote..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9 rounded-md border-2 font-body" />
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 scrollbar-hide">
+        <PageContainer variant="fullBleed" className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
           {statuses.map(s => (
             <button
               key={s.value}
@@ -216,9 +218,9 @@ export default function PokedexPage() {
               {s.label}
             </button>
           ))}
-        </div>
+        </PageContainer>
 
-        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 scrollbar-hide">
+        <PageContainer variant="fullBleed" className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
           <button
             onClick={() => setGenFilter(null)}
             className={`px-2.5 py-1 rounded-md text-[10px] font-bold whitespace-nowrap transition-all border font-body ${genFilter === null ? 'bg-accent text-accent-foreground border-accent' : 'bg-muted text-muted-foreground border-border'}`}
@@ -234,7 +236,7 @@ export default function PokedexPage() {
               {g.name}
             </button>
           ))}
-        </div>
+        </PageContainer>
 
         {run.players.length > 1 && (
           <div className="flex gap-2">
@@ -289,7 +291,8 @@ export default function PokedexPage() {
             </p>
           </div>
         )}
-      </div>
+        </div>
+      </PageContainer>
 
       {/* Detail Dialog */}
       <Dialog open={!!selectedPokemon && !deathModalOpen} onOpenChange={v => { if (!v) setSelectedPokemon(null); }}>
