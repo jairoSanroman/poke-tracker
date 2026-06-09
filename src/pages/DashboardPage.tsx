@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { GameLayout } from '@/components/GameLayout';
+import { PageContainer } from '@/components/PageContainer';
 import { LivesCounter } from '@/components/LivesCounter';
 import { PlayerBadge } from '@/components/PlayerBadge';
 import { Map, BookOpen, Users, ChevronRight, Link2, Shuffle } from 'lucide-react';
