@@ -17,8 +17,12 @@ export function PageContainer({ children, className, variant = 'default' }: Page
   return (
     <div
       className={cn(
-        variant === 'default' && 'px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-6',
-        variant === 'fullBleed' && '-mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6',
+        'w-full',
+        // `default`: pass-through. El padding base lo aporta <main> en GameLayout,
+        // garantizando que la variante `fullBleed` siempre rompa contra el mismo
+        // padding (px-3 / sm:px-4 / lg:px-6) sin importar dónde se anide.
+        variant === 'fullBleed' &&
+          '-mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-6 lg:px-6 max-w-[calc(100%+1.5rem)] sm:max-w-[calc(100%+2rem)] lg:max-w-[calc(100%+3rem)]',
         className
       )}
     >
