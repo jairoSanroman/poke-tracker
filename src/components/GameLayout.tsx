@@ -22,7 +22,7 @@ export function GameLayout({ children, title, headerRight, gradient = false }: G
             </div>
           </header>
         )}
-        <main className="flex-1 pb-24 lg:pb-8 overflow-y-auto dot-texture">
+        <main className="flex-1 pb-24 lg:pb-8 overflow-x-hidden overflow-y-auto dot-texture px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-6">
           {children}
         </main>
         <BottomNav />
